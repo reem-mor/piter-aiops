@@ -1,0 +1,72 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap");
+
+:root {
+  /* Palette aligned to IncidentIQ reference (hsl 222 39% 7% base, hsl 205 100% 55% primary) */
+  --bg-base: #0b0f19;
+  --bg-panel: #101624;
+  --bg-elevated: #151c2e;
+  --bg-hover: #1b2338;
+  --border: #242b38;
+  --border-subtle: #1b2230;
+  --gradient-shell: radial-gradient(1200px 600px at 10% -10%, rgba(26, 159, 255, 0.07), transparent 55%),
+    radial-gradient(900px 500px at 90% 0%, rgba(26, 159, 255, 0.04), transparent 50%);
+  --gradient-card: linear-gradient(145deg, rgba(21, 28, 46, 0.95), rgba(16, 22, 36, 0.98));
+  --gradient-primary: linear-gradient(135deg, #0d7fd9 0%, #1a9fff 100%);
+
+  --text-primary: #edf2fa;
+  --text-secondary: #98a6bd;
+  --text-muted: #69788f;
+
+  --accent: #1a9fff;
+  --accent-dim: #0d7fd9;
+  --ai-cyan: #1a9fff;
+  --intel-purple: #a78bfa;
+
+  --sev-p1: #e64545;
+  --sev-p2: #f5a821;
+  --sev-p3: #eab308;
+  --sev-p4: #3b82f6;
+  --success: #25c35e;
+  --warning: #f5a821;
+  --danger: #e64545;
+
+  --critical-glow: 0 0 28px rgba(230, 69, 69, 0.25);
+  --accent-glow: 0 0 30px rgba(26, 159, 255, 0.25);
+  --panel-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  --motion-fast: 180ms ease;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+  --font-display: "IBM Plex Sans", var(--font-sans);
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --motion-stagger: 60ms;
+
+  --sidebar-width: 220px;
+  --topbar-height: 52px;
+  --dock-width: 420px;
+  --dock-rail-width: 44px;
+  --content-max-width: 1600px;
+  --focus-ring: 0 0 0 2px var(--bg-base), 0 0 0 4px var(--accent);
+}
+
+:root.critical-mode {
+  --accent: #f87171;
+  --accent-dim: #dc2626;
+  --border-subtle: rgba(230, 69, 69, 0.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-fast: 0ms;
+  }
+}

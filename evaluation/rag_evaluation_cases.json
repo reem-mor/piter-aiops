@@ -1,0 +1,20 @@
+[
+  {
+    "id": "rag-auth-deploy",
+    "question": "What should I check when users cannot log in after the latest deployment?",
+    "expected_sources": ["auth_service_login_failure.md", "deployment_rollback.md"],
+    "required_terms": ["auth-service", "deployment", "Redis", "rollback"]
+  },
+  {
+    "id": "rag-business-impact",
+    "question": "What is the business impact of auth-service login failure?",
+    "expected_sources": ["business_impact_matrix.md", "auth_service.md"],
+    "required_terms": ["tier-0", "login", "revenue"]
+  },
+  {
+    "id": "rag-escalation",
+    "question": "Who should I escalate this incident to?",
+    "expected_sources": ["escalation_policy.md", "auth_service.md"],
+    "required_terms": ["primary", "on-call", "safe preview"]
+  }
+]

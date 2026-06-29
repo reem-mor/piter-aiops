@@ -1,0 +1,5 @@
+incident_id,service,environment,severity,symptom,root_cause,resolution,business_impact,occurred_at
+INC-AUTH-2026-03-08,auth-service,production,P2,Login latency and token validation timeouts,Redis connection pool exhaustion after auth client change,Rolled back auth client pool change and reduced token refresh concurrency,Login degraded for regulated markets,2026-03-08T11:15:00Z
+INC-AUTH-2025-10-28,auth-service,GIB-UKGC,P2,Regional login failures after route change,OIDC callback route drift at API Gateway,Reverted gateway route and added drift detection,EU login conversion dropped for 25 minutes,2025-10-28T14:20:00Z
+INC-DEPLOY-2026-06-10,bet-service,GIB-UKGC,P1,100% bet-service error rate after deployment,Retry fan-out saturated connection pools,Rolled back deployment and validated circuit breaker recovery,High revenue and regulatory exposure,2026-06-10T10:02:00Z
+INC-DB-2026-01-22,customer-db,NJ-DGE,P2,Auth lookups timing out,Long-running migration lock blocked user table reads,Killed blocker with DBA approval and postponed migration,Login degraded for regulated market,2026-01-22T09:45:00Z

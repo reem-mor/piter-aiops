@@ -1,0 +1,13 @@
+{
+  "doc_id": "escalation_policies_guide",
+  "title": "PITER Escalation Policy",
+  "doc_type": "policy",
+  "services": "all",
+  "environments": "production",
+  "severity_applicable": "P1,P2,P3,P4",
+  "tags": "escalation, safe preview, notification, guardrails, escalation_policies",
+  "last_updated": "2026-06-09",
+  "author": "PITER AiOps",
+  "version": "1.0",
+  "body": "PITER may recommend escalation and draft safe escalation previews. It must not send real escalation messages automatically.\n\nStructured role mappings and PagerDuty schedule IDs live in data/source/escalation_policies.json (piter-escalation Action Group). Use that tool for who to page; use this guide for severity rules and safe preview wording.\n\n## Severity Policy\n\n- P1: notify primary on-call, secondary on-call, incident commander, and service lead immediately.\n- P2: notify primary on-call and service lead within 15 minutes.\n- P3: notify primary on-call during business hours unless customer impact increases.\n- P4: ticket only unless trend worsens.\n\n## Safe Escalation Preview Guidelines\n\n1. Include service, environment, priority, impact, suspected cause, and next action.\n2. Mask direct recipient details.\n3. Do not include real phone numbers or personal email addresses.\n4. Do not expose secrets, tokens, AWS keys, or private credentials.\n5. Say when information is missing instead of inventing facts.\n\n## Confirmation\n\nHuman confirmation is required before SNS, SES, Slack, PagerDuty, or other live notifications."
+}

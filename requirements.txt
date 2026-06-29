@@ -1,0 +1,8 @@
+# Production/runtime dependencies (Dockerfile, EC2, gunicorn).
+# Dev/test: pip install -r requirements-dev.txt
+Flask==3.0.3
+Flask-WTF==1.2.1
+gunicorn==22.0.0
+boto3>=1.39.0
+python-dotenv==1.0.1
+pandas==2.2.3

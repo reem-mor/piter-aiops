@@ -1,0 +1,87 @@
+<section id="architecture" class="section">
+  <div class="section-inner">
+    <h2 class="section-title">Interactive architecture</h2>
+    <p class="section-lead">
+      Click any block to see an example tool call, the live response, and the resolution plan that follows.
+      <button type="button" class="inline-link-btn" data-open-guide>Open the system guide</button> for the full background path.
+    </p>
+
+    <div class="glass" style="padding:1.5rem;margin-top:2rem;">
+      <div class="arch-flow">
+        <button type="button" class="arch-block neon-ring-ingest" data-arch-block="documents">
+          <div class="arch-block-label">Documents</div>
+          <div class="arch-block-sub">PDF / TXT / DOCX</div>
+        </button>
+        <span class="arch-arrow">upload</span>
+        <button type="button" class="arch-block neon-ring-rag is-active" data-arch-block="kb">
+          <div class="arch-block-label">Bedrock KB</div>
+          <div class="arch-block-sub">S3 + Vector index</div>
+        </button>
+        <span class="arch-arrow">retrieve</span>
+        <button type="button" class="arch-block neon-ring-interface" data-arch-block="flask">
+          <div class="arch-block-label">Flask + boto3</div>
+          <div class="arch-block-sub">Alert → Answer</div>
+        </button>
+        <span class="arch-arrow">serve</span>
+        <button type="button" class="arch-block neon-ring-tools" data-arch-block="docker">
+          <div class="arch-block-label">Docker</div>
+          <div class="arch-block-sub">Portable image</div>
+        </button>
+        <span class="arch-arrow">ship</span>
+        <button type="button" class="arch-block neon-ring-agent" data-arch-block="ec2">
+          <div class="arch-block-label">EC2</div>
+          <div class="arch-block-sub">Runs container</div>
+        </button>
+        <span class="arch-arrow">deploy</span>
+        <button type="button" class="arch-block neon-ring-resolution" data-arch-block="public">
+          <div class="arch-block-label">Public URL</div>
+          <div class="arch-block-sub">On-call access</div>
+        </button>
+      </div>
+
+      <div id="arch-detail" class="arch-detail">
+        <div data-arch-panel="documents" hidden>
+          <h3 style="margin:0;font-size:1rem">Upload to S3</h3>
+          <p style="color:var(--muted-foreground);font-size:0.875rem">Runbooks and incident exports land in the KB data source bucket.</p>
+          <pre class="code-block">aws s3 sync ./knowledge_base/ s3://YOUR-BUCKET/projects/piter-aiops/knowledge_base/ --delete</pre>
+        </div>
+        <div data-arch-panel="kb">
+          <h3 style="margin:0;font-size:1rem">boto3 · RetrieveAndGenerate</h3>
+          <p style="color:var(--muted-foreground);font-size:0.875rem">Bedrock retrieves chunks and generates a grounded answer. KB: {{ kb_id }}</p>
+          <pre class="code-block">client.retrieve_and_generate(
+  input={"text": question},
+  retrieveAndGenerateConfiguration={
+    "type": "KNOWLEDGE_BASE",
+    "knowledgeBaseConfiguration": {
+      "knowledgeBaseId": "{{ kb_id }}",
+      "modelArn": "{{ model_label }}",
+    },
+  },
+)</pre>
+        </div>
+        <div data-arch-panel="flask" hidden>
+          <h3 style="margin:0;font-size:1rem">Browser → Flask</h3>
+          <pre class="code-block">POST /ask
+Content-Type: application/x-www-form-urlencoded
+
+question=How+do+I+triage+auth+incidents%3F</pre>
+        </div>
+        <div data-arch-panel="docker" hidden>
+          <h3 style="margin:0;font-size:1rem">Build &amp; run</h3>
+          <pre class="code-block">docker compose up --build -d
+curl http://localhost:8080/health</pre>
+        </div>
+        <div data-arch-panel="ec2" hidden>
+          <h3 style="margin:0;font-size:1rem">On the EC2 host</h3>
+          <pre class="code-block">docker run -d -p 80:8080 --env-file .env piter-aiops</pre>
+        </div>
+        <div data-arch-panel="public" hidden>
+          <h3 style="margin:0;font-size:1rem">Smoke test</h3>
+          <pre class="code-block">curl -s "http://HOST/ask?format=json" \
+  -H "Content-Type: application/json" \
+  -d '{"question":"What are P1 escalation steps?"}'</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

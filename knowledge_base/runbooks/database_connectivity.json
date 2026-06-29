@@ -1,0 +1,13 @@
+{
+  "doc_id": "database_connectivity",
+  "title": "Database Connectivity Runbook",
+  "doc_type": "runbook",
+  "services": "customer-db, postgres, auth-service, payment-service",
+  "environments": "production, GIB-UKGC, NJ-DGE",
+  "severity_applicable": "P1,P2,P3",
+  "tags": "database, postgres, connectivity, cpu, pool, locks",
+  "last_updated": "2026-06-08",
+  "author": "PITER AiOps",
+  "version": "1.0",
+  "body": "# Database Connectivity Runbook\n\nUse this runbook for PostgreSQL CPU saturation, connection pool exhaustion, lock waits, replica lag, or auth-service customer-db errors.\n\n## Investigation Steps\n\n1. Check database CPU, active connections, connection pool saturation, lock waits, and slow queries.\n2. Compare database symptoms with the affected service deployment timeline.\n3. Identify whether failures are reads, writes, or authentication-specific lookups.\n4. Check replica lag before shifting read traffic.\n5. Inspect the top queries and recent migrations for missing indexes or long transactions.\n\n## Triage Decision Tree\n\n- If CPU is high with one dominant query, mitigate the query or roll back the service that introduced it.\n- If connections are exhausted, reduce client pool pressure before killing database sessions.\n- If a migration lock is blocking auth-service reads or writes, involve DBA and service owner immediately.\n- If replica lag affects reads only, remove the lagging replica from rotation.\n\n## Remediation\n\n1. Stop the newest deployment or feature flag that created the load.\n2. Reduce service replica count or connection pool size if the database is overloaded by clients.\n3. Kill only confirmed blocking sessions with DBA approval.\n4. Roll back a schema or application change only when the rollback plan is verified.\n\n## Verification\n\n- CPU remains below alert threshold for 10 minutes.\n- Connection pool saturation clears.\n- Auth-service login checks pass.\n- No new lock waits accumulate.\n\n## Escalation\n\nEscalate to Platform DBA for P1/P2 database incidents. Include service, query evidence, deployment correlation, business impact, and rollback status."
+}

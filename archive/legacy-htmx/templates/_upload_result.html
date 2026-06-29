@@ -1,0 +1,21 @@
+<div class="upload-result {% if error %}upload-result--error{% elif result %}upload-result--success{% endif %}">
+  {% if error %}
+    <p class="upload-result-title">Upload failed</p>
+    <p class="upload-result-message">{{ error }}</p>
+  {% elif result %}
+    <p class="upload-result-title">Document saved</p>
+    <ul class="upload-meta">
+      <li><strong>File:</strong> {{ result.filename }}</li>
+      <li><strong>Size:</strong> {{ (result.size_bytes / 1024)|round(1) }} KB</li>
+      <li><strong>S3 key:</strong> <code>{{ result.s3_key }}</code></li>
+      {% if result.sync_started %}
+        <li class="upload-sync-ok">
+          <strong>Knowledge Base sync:</strong> ingestion job started
+          {% if result.ingestion_job_id %}({{ result.ingestion_job_id }}){% endif %}
+        </li>
+      {% else %}
+        <li><strong>Knowledge Base:</strong> saved to S3 only — run Sync in Bedrock console to index.</li>
+      {% endif %}
+    </ul>
+  {% endif %}
+</div>

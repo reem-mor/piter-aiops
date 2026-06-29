@@ -1,0 +1,13 @@
+environment,service,severity,tier,revenue_impact_usd_per_hour,player_impact_pct,regulatory_flag,escalation_minutes
+NJ-DGE,postgres,P1,1,450000,85,true,5
+NJ-DGE,postgres,P2,1,120000,35,true,15
+NJ-DGE,postgres,P3,2,15000,5,true,60
+NJ-DGE,settlement-svc,P1,1,380000,70,true,5
+NJ-DGE,settlement-svc,P2,2,90000,25,true,20
+NJ-DGE,checkout-api,P2,2,75000,20,false,30
+NJ-DGE,auth-api,P2,2,60000,40,false,20
+GIB,postgres,P2,2,45000,15,false,30
+MGM,postgres,P3,3,8000,3,false,120
+GIB-UKGC,bet-service,P1,1,520000,92,true,5
+GIB-UKGC,bet-service,P2,2,140000,40,true,15
+GIB-UKGC,bet-service,P3,3,18000,8,true,45

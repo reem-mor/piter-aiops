@@ -1,0 +1,22 @@
+---
+doc_id: "business_impact_guide"
+title: "Business Impact Interpretation"
+doc_type: "guide"
+services: "all"
+environments: "production, GIB-UKGC, NJ-DGE, MGM, MIRAGE"
+severity_applicable: "P1,P2,P3,P4"
+tags: "business_impact, tier, revenue, compliance"
+last_updated: "2026-06-09"
+author: "PITER AiOps"
+version: "1.0"
+---
+
+Use the piter-service-context Action Group and data/source/business_impact.json for numeric impact scores, tier labels, and environment-specific revenue exposure.
+
+## How to explain impact
+
+- Tier-0 services (auth-service, wallet-service, bet-service, payments-service, replication) block revenue or regulated play when degraded in production.
+- Auth-service login failures in GIB-UKGC affect regulated UKGC traffic; cite tier-0 and login dependency on Redis token store.
+- Always pair narrative impact with severity (P1-P4) and environment code from the alert.
+
+Do not invent dollar amounts; quote Action Group fields or say data is unavailable.

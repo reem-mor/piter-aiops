@@ -1,0 +1,39 @@
+{
+  "doc_id": "structured_data_index",
+  "title": "Structured operational datasets (Action Groups)",
+  "doc_type": "reference",
+  "services": "all",
+  "environments": "all",
+  "severity_applicable": "P1,P2,P3,P4",
+  "tags": "csv, json, action-groups, no-duplicate",
+  "last_updated": "2026-06-09",
+  "author": "PITER AiOps",
+  "version": "1.0",
+  "body": "Structured operational data is stored once under data/source/ and read by Bedrock Action Groups (not duplicated in this knowledge base).\n\n- deploys.csv -> piter-recent-deployments\n- service_owners.csv, business_impact.json -> piter-service-context\n- past_incidents.csv -> piter-similar-incidents\n- escalation_policies.json, priority_matrix.json -> piter-escalation\n\nUse Action Groups for numeric scores, owners, and historical rows. Use KB JSON runbooks and service guides for procedural remediation text.\n\nSafety: never expose real phone numbers or personal email addresses in chat output. Use safe preview fields (on-call role names, PagerDuty schedule IDs) only.",
+  "datasets": [
+    {
+      "file": "data/source/deploys.csv",
+      "tool": "piter-recent-deployments"
+    },
+    {
+      "file": "data/source/service_owners.csv",
+      "tool": "piter-service-context"
+    },
+    {
+      "file": "data/source/business_impact.json",
+      "tool": "piter-service-context"
+    },
+    {
+      "file": "data/source/past_incidents.csv",
+      "tool": "piter-similar-incidents"
+    },
+    {
+      "file": "data/source/escalation_policies.json",
+      "tool": "piter-escalation"
+    },
+    {
+      "file": "data/source/priority_matrix.json",
+      "tool": "piter-escalation"
+    }
+  ]
+}

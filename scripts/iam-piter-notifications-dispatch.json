@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowPublishToPiterEscalationTopicOnly",
+      "Effect": "Allow",
+      "Action": ["sns:Publish"],
+      "Resource": "arn:aws:sns:us-east-1:329597159579:piter-aiops-escalation"
+    },
+    {
+      "Sid": "AllowSesSendFromVerifiedIdentitiesOnly",
+      "Effect": "Allow",
+      "Action": ["ses:SendEmail", "ses:SendRawEmail"],
+      "Resource": [
+        "arn:aws:ses:us-east-1:329597159579:identity/fontex331@gmail.com",
+        "arn:aws:ses:us-east-1:329597159579:identity/reem.mor3@gmail.com",
+        "arn:aws:ses:us-east-1:329597159579:configuration-set/piter-aiops-escalations"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "ses:FromAddress": ["fontex331@gmail.com", "reem.mor3@gmail.com"]
+        }
+      }
+    },
+    {
+      "Sid": "AllowSesReadOnlyStatus",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetAccount",
+        "ses:GetSendQuota",
+        "ses:GetEmailIdentity",
+        "ses:ListEmailIdentities"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowSmsVoiceDispatch",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:SendTextMessage",
+        "sms-voice:DescribeAccountAttributes",
+        "sms-voice:DescribePhoneNumbers"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowSnsSmsReadiness",
+      "Effect": "Allow",
+      "Action": ["sns:GetSMSAttributes", "sns:ListSMSSandboxPhoneNumbers"],
+      "Resource": "*"
+    }
+  ]
+}

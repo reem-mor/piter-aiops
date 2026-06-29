@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}PITER AiOps · Agentic SRE Flow{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <script src="https://unpkg.com/htmx.org@2.0.3" defer></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+</head>
+<body>
+  <header class="topbar" role="banner">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">🛰️</span>
+      <div class="brand-text">
+        <span class="brand-name">PITER AiOps</span>
+        <span class="brand-tag">Agentic SRE · Bedrock KB</span>
+      </div>
+    </div>
+    <nav class="topnav" aria-label="Page sections">
+      <a href="#priority-center">PITER workflow</a>
+      <a href="#architecture">Architecture</a>
+      <button type="button" class="topnav-link" data-open-guide>How it works</button>
+      <a href="#document-upload">Upload</a>
+      <a href="#live-kb">Live KB</a>
+      <a href="#flow">Flow</a>
+    </nav>
+    <div class="status-pill" title="Backed by Amazon Bedrock Knowledge Base">
+      <span class="dot"></span> grounded · {{ model_label|default('Bedrock') }}
+    </div>
+  </header>
+
+  <main class="page-main" role="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <p>Mid-project presentation · Built to be understood by both technical and non-technical reviewers.</p>
+  </footer>
+
+  {% include "_system_guide.html" %}
+</body>
+</html>

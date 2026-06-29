@@ -1,0 +1,26 @@
+---
+doc_id: "historical_auth_incidents"
+title: "Historical Auth Incidents"
+doc_type: "incident"
+services: "auth-service, redis-token-store"
+environments: "production, GIB-UKGC, NJ-DGE"
+severity_applicable: "P1,P2,P3"
+tags: "historical, auth, login, redis, deployment"
+last_updated: "2026-06-08"
+author: "PITER AiOps"
+version: "1.0"
+---
+
+# Historical Auth Incidents
+
+## INC-AUTH-2026-03-08
+
+Auth-service latency and login timeouts increased after a client-pool change. Root cause was connection pool exhaustion between auth-service and Redis token store. Resolution was rollback plus lower token refresh concurrency. Lesson: after auth deployments, check Redis latency and pool saturation before changing database settings.
+
+## INC-AUTH-2025-10-28
+
+Login failures affected EU traffic after CDN and gateway configuration drift. Root cause was an invalid route rule for OIDC callback paths. Resolution was gateway route rollback and drift detection.
+
+## Reuse Guidance
+
+When a new incident mentions users cannot log in after latest deployment, first compare deployment time, Redis token health, customer-db health, and API Gateway routes.

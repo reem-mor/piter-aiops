@@ -1,0 +1,76 @@
+{
+  "factors": {
+    "customer_impact_pct": {
+      "weight": 0.3,
+      "description": "Percentage of active users impacted"
+    },
+    "revenue_per_minute_usd": {
+      "weight": 0.25,
+      "description": "Estimated revenue loss or risk per minute"
+    },
+    "regulatory_exposure": {
+      "weight": 0.2,
+      "description": "Regulated markets or compliance reporting exposure"
+    },
+    "sla_risk": {
+      "weight": 0.15,
+      "description": "Risk of breaching operational SLA/SLO targets"
+    },
+    "alert_frequency": {
+      "weight": 0.1,
+      "description": "Repeated alerts in a short window increase confidence"
+    }
+  },
+  "thresholds": {
+    "P1": {
+      "description": "Customer-facing outage, severe revenue risk, or regulated-market exposure",
+      "customer_impact_pct": ">=20",
+      "revenue_per_minute_usd": ">=5000",
+      "response_minutes": 5,
+      "requires_escalation": true
+    },
+    "P2": {
+      "description": "Major degradation or limited customer-facing impact",
+      "customer_impact_pct": ">=5",
+      "revenue_per_minute_usd": ">=1500",
+      "response_minutes": 15,
+      "requires_escalation": true
+    },
+    "P3": {
+      "description": "Partial degradation with workaround or no major customer impact",
+      "customer_impact_pct": ">=1",
+      "revenue_per_minute_usd": ">=300",
+      "response_minutes": 30,
+      "requires_escalation": false
+    },
+    "P4": {
+      "description": "Operational noise, capacity warning, or no customer impact",
+      "customer_impact_pct": "<1",
+      "revenue_per_minute_usd": "<300",
+      "response_minutes": 240,
+      "requires_escalation": false
+    }
+  },
+  "examples": [
+    {
+      "alert": "bet-service nodes unresponsive in GIB-UKGC",
+      "priority": "P1",
+      "rationale": "100% error rate, high revenue risk, regulated market"
+    },
+    {
+      "alert": "payments-service latency over 3 seconds",
+      "priority": "P2",
+      "rationale": "payment degradation, customer-facing, limited scope"
+    },
+    {
+      "alert": "Kafka consumer lag elevated",
+      "priority": "P3",
+      "rationale": "delayed processing with no current outage"
+    },
+    {
+      "alert": "memory utilization 82%",
+      "priority": "P4",
+      "rationale": "capacity warning, no confirmed impact"
+    }
+  ]
+}

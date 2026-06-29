@@ -1,0 +1,77 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "InvokeBedrockAgent",
+      "Effect": "Allow",
+      "Action": "bedrock:InvokeAgent",
+      "Resource": "arn:aws:bedrock:<REGION>:<ACCOUNT_ID>:agent-alias/<AGENT_ID>/<AGENT_ALIAS_ID>"
+    },
+    {
+      "Sid": "KnowledgeBaseRetrieval",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:Retrieve",
+        "bedrock:RetrieveAndGenerate"
+      ],
+      "Resource": "arn:aws:bedrock:<REGION>:<ACCOUNT_ID>:knowledge-base/<KB_ID>"
+    },
+    {
+      "Sid": "InvokeFoundationModelForRetrieveAndGenerate",
+      "Effect": "Allow",
+      "Action": "bedrock:InvokeModel",
+      "Resource": "arn:aws:bedrock:<REGION>::foundation-model/amazon.nova-lite-v1:0"
+    },
+    {
+      "Sid": "InvokeActionGroupLambdas",
+      "Effect": "Allow",
+      "Action": "lambda:InvokeFunction",
+      "Resource": [
+        "arn:aws:lambda:<REGION>:<ACCOUNT_ID>:function:piter-recent-deployments",
+        "arn:aws:lambda:<REGION>:<ACCOUNT_ID>:function:piter-service-context",
+        "arn:aws:lambda:<REGION>:<ACCOUNT_ID>:function:piter-similar-incidents",
+        "arn:aws:lambda:<REGION>:<ACCOUNT_ID>:function:piter-escalation"
+      ]
+    },
+    {
+      "Sid": "SendEscalationEmail",
+      "Effect": "Allow",
+      "Action": "ses:SendEmail",
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "ses:FromAddress": "<SES_SENDER_EMAIL>"
+        }
+      }
+    },
+    {
+      "Sid": "SendEscalationSms",
+      "Effect": "Allow",
+      "Action": [
+        "sns:Publish",
+        "sms-voice:SendTextMessage"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SmsReadinessChecksReadOnly",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DescribeAccountAttributes",
+        "sns:GetSMSAttributes",
+        "sns:ListSMSSandboxPhoneNumbers"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchLogsWrite",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "arn:aws:logs:<REGION>:<ACCOUNT_ID>:log-group:/piter-aiops/*"
+    }
+  ]
+}

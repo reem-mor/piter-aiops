@@ -1,0 +1,31 @@
+[
+  {
+    "tool": "get_recent_deployments",
+    "arguments": {
+      "service": "auth-service",
+      "environment": "production"
+    }
+  },
+  {
+    "tool": "get_service_context",
+    "arguments": {
+      "service": "auth-service"
+    }
+  },
+  {
+    "tool": "find_similar_incidents",
+    "arguments": {
+      "service": "auth-service",
+      "symptom": "users cannot log in",
+      "severity": "P2"
+    }
+  },
+  {
+    "tool": "get_escalation_recommendation",
+    "arguments": {
+      "service": "auth-service",
+      "priority": "P2",
+      "business_impact": "login failure after deployment"
+    }
+  }
+]

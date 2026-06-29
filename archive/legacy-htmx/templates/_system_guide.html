@@ -1,0 +1,71 @@
+<dialog id="system-guide" class="system-guide" aria-labelledby="system-guide-title">
+  <div class="system-guide-inner">
+    <header class="system-guide-header">
+      <div>
+        <p class="system-guide-kicker">Background · Architecture</p>
+        <h2 id="system-guide-title">How PITER AiOps works under the hood</h2>
+        <p class="system-guide-lead">
+          When you run triage or ask the Live KB a question, this is the path from alert to grounded answer —
+          no client-side RAG demo, real Amazon Bedrock RetrieveAndGenerate.
+        </p>
+      </div>
+      <button type="button" class="system-guide-close" data-close-guide aria-label="Close guide">×</button>
+    </header>
+
+    <div class="system-guide-flow" aria-label="Request path">
+      <div class="guide-step neon-ring-ingest">
+        <span class="guide-step-num">1</span>
+        <strong>Browser</strong>
+        <span>HTMX POST /ask or /workflow/triage</span>
+      </div>
+      <span class="guide-arrow" aria-hidden="true">→</span>
+      <div class="guide-step neon-ring-interface">
+        <span class="guide-step-num">2</span>
+        <strong>Flask</strong>
+        <span>Validate question · route · render partial</span>
+      </div>
+      <span class="guide-arrow" aria-hidden="true">→</span>
+      <div class="guide-step neon-ring-rag">
+        <span class="guide-step-num">3</span>
+        <strong>Bedrock KB</strong>
+        <span>Vector retrieve chunks from S3 corpus</span>
+      </div>
+      <span class="guide-arrow" aria-hidden="true">→</span>
+      <div class="guide-step neon-ring-agent">
+        <span class="guide-step-num">4</span>
+        <strong>LLM</strong>
+        <span>Generate answer grounded in citations</span>
+      </div>
+      <span class="guide-arrow" aria-hidden="true">→</span>
+      <div class="guide-step neon-ring-resolution">
+        <span class="guide-step-num">5</span>
+        <strong>UI</strong>
+        <span>Answer card · runbook · recommendation</span>
+      </div>
+    </div>
+
+    <section class="system-guide-section">
+      <h3>What happens on each request</h3>
+      <ol class="system-guide-list">
+        <li><strong>Validation</strong> — Flask rejects empty, too-short, or stopword-only questions before any AWS call.</li>
+        <li><strong>RetrieveAndGenerate</strong> — <code>boto3</code> calls Bedrock Agent Runtime with your KB ID and inference profile ARN.</li>
+        <li><strong>Citations</strong> — Retrieved chunk metadata is mapped to human-readable runbook filenames (not raw S3 URIs).</li>
+        <li><strong>Workflow reasoning</strong> — MVP triage combines live KB output with alert metadata (severity, MTTR baseline, escalation policy).</li>
+        <li><strong>Upload path</strong> — Optional S3 put + StartIngestionJob syncs new runbooks into the same KB prefix.</li>
+      </ol>
+    </section>
+
+    <section class="system-guide-section">
+      <h3>Deployment stack</h3>
+      <p class="system-guide-lead">
+        Documents in S3 → Bedrock KB index → Flask container → Docker on EC2 → public URL for on-call.
+      </p>
+    </section>
+
+    <footer class="system-guide-footer">
+      <a class="btn-secondary" href="#architecture" data-close-guide>Explore interactive architecture</a>
+      <a class="btn-secondary" href="#flow" data-close-guide>Step-by-step flow</a>
+      <button type="button" class="btn-primary" data-close-guide>Got it</button>
+    </footer>
+  </div>
+</dialog>

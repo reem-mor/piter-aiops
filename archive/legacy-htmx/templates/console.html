@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PITER AiOps — AI Incident &amp; Alerts Console</title>
+  <style>
+    :root {
+      --bg: #0b1020; --panel: #131a2e; --panel2: #182038; --ink: #e7ecf5;
+      --muted: #9aa7c2; --accent: #6ea8fe; --good: #34d399; --warn: #f59e0b;
+      --bad: #f87171; --border: #243150;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #0b1020; color: #e7ecf5;
+      font: 15px/1.55 -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
+    header { padding: 18px 24px; border-bottom: 1px solid #243150;
+      display: flex; align-items: center; gap: 12px; background: #0e1426; }
+    header h1 { font-size: 18px; margin: 0; letter-spacing: .2px; }
+    header .badge { margin-left: auto; font-size: 12px; color: #9aa7c2;
+      border: 1px solid #243150; padding: 4px 10px; border-radius: 999px; }
+    main { max-width: 980px; margin: 0 auto; padding: 24px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    label { display: block; font-size: 12px; color: #9aa7c2; margin: 0 0 4px; }
+    input, select, textarea { width: 100%; background: #0e1426; color: #e7ecf5;
+      border: 1px solid #243150; border-radius: 8px; padding: 9px 11px; font: inherit; }
+    textarea { min-height: 64px; resize: vertical; }
+    .row { margin-bottom: 12px; }
+    .actions { display: flex; gap: 10px; margin-top: 8px; }
+    button { background: #6ea8fe; color: #07112a; border: 0; border-radius: 8px;
+      padding: 10px 16px; font-weight: 600; cursor: pointer; }
+    button.secondary { background: transparent; color: #e7ecf5; border: 1px solid #243150; }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    .card { background: #131a2e; border: 1px solid #243150; border-radius: 12px;
+      padding: 18px; margin-top: 18px; }
+    .card h2 { font-size: 15px; margin: 0 0 6px; }
+    .section { border-top: 1px solid #243150; padding: 12px 0; }
+    .section:first-child { border-top: 0; padding-top: 0; }
+    .muted { color: #9aa7c2; }
+    .pill { display: inline-block; font-size: 12px; padding: 2px 9px; border-radius: 999px;
+      border: 1px solid #243150; margin-right: 6px; }
+    .pill.local { color: #34d399; border-color: #1f4d3a; }
+    .pill.bedrock { color: #6ea8fe; border-color: #1f3a66; }
+    ol, ul { margin: 6px 0 0 18px; padding: 0; }
+    pre { white-space: pre-wrap; background: #0e1426; border: 1px solid #243150;
+      border-radius: 8px; padding: 10px; margin: 6px 0 0; font-size: 13px; }
+    .cite { font-size: 13px; border-left: 3px solid #6ea8fe; padding: 4px 0 4px 10px; margin: 8px 0; }
+    .steps li { margin: 2px 0; }
+    .loader { display: none; margin-top: 14px; color: #9aa7c2; }
+    .loader.on { display: block; }
+    .loader .step { opacity: .4; }
+    .loader .step.done { opacity: 1; color: #34d399; }
+    .err { color: #f87171; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    td, th { text-align: left; padding: 4px 6px; border-bottom: 1px solid #1c2742; }
+  </style>
+</head>
+<body>
+  <header>
+    <strong>🛰️ PITER AiOps</strong>
+    <h1>AI Incident &amp; Alerts Console</h1>
+    <span class="badge" id="modeBadge">mode: —</span>
+  </header>
+
+  <main>
+    <div class="card">
+      <div class="actions" style="margin-top:0;margin-bottom:14px">
+        <button class="secondary" id="demoBtn" type="button">Load demo alert</button>
+      </div>
+      <form id="alertForm">
+        <div class="grid">
+          <div class="row"><label>Service</label><input name="service" id="service" placeholder="postgres" required /></div>
+          <div class="row"><label>Environment</label><input name="environment" id="environment" placeholder="NJ-DGE" /></div>
+        </div>
+        <div class="grid">
+          <div class="row">
+            <label>Severity</label>
+            <select name="severity" id="severity">
+              <option value="">—</option><option>P1</option><option selected>P2</option><option>P3</option><option>P4</option>
+            </select>
+          </div>
+          <div class="row"><label>Alert time (ISO-8601)</label><input name="alert_time" id="alert_time" placeholder="2026-06-10T09:00:00Z" /></div>
+        </div>
+        <div class="row"><label>Symptom / description</label><textarea name="symptom" id="symptom" placeholder="Postgres CPU is 95% on prod-db-1" required></textarea></div>
+        <div class="actions">
+          <button id="triageBtn" type="submit">Run triage</button>
+        </div>
+      </form>
+
+      <div class="loader" id="loader">
+        <div class="step" id="s1">1. Retrieving runbook…</div>
+        <div class="step" id="s2">2. Calling enrichment tools…</div>
+        <div class="step" id="s3">3. Building triage card…</div>
+      </div>
+    </div>
+
+    <div id="result"></div>
+  </main>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    let sessionId = null;
+
+    async function loadDemo() {
+      const r = await fetch('/api/demo-alert');
+      const d = await r.json();
+      const a = d.alert || {};
+      $('service').value = a.service || '';
+      $('environment').value = a.environment || '';
+      $('severity').value = a.severity || 'P2';
+      $('alert_time').value = a.alert_time || '';
+      $('symptom').value = a.symptom || a.description || '';
+    }
+
+    function setMode(mode) {
+      const b = $('modeBadge');
+      b.textContent = 'mode: ' + mode;
+      b.className = 'badge';
+    }
+
+    function escapeHtml(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, (c) =>
+        ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    function renderCard(card) {
+      sessionId = card.session_id;
+      setMode(card.mode);
+      const cites = (card.citations || []).map((c) =>
+        `<div class="cite"><strong>${escapeHtml(c.document)}</strong> · score ${c.score}<br>${escapeHtml((c.excerpt || '').slice(0, 320))}…</div>`).join('') || '<span class="muted">No citation — not in knowledge base.</span>';
+      const steps = (card.recommended_steps || []).map((s) => `<li>${escapeHtml(s)}</li>`).join('') || '<li class="muted">See runbook.</li>';
+      const sus = card.suspect_deployment;
+      const owner = card.owner || {};
+      const impact = card.impact || {};
+      const similar = (card.similar_incidents || []).map((i) =>
+        `<tr><td>${escapeHtml(i.incident_id)}</td><td>${escapeHtml(i.root_cause)}</td><td>${escapeHtml(i.resolution)}</td><td>${i.mttr_minutes}m</td></tr>`).join('');
+      $('result').innerHTML = `
+        <div class="card">
+          <h2>Triage card
+            <span class="pill ${card.mode}">${card.mode}</span>
+            <span class="pill">runbook: ${escapeHtml(card.matched_runbook || 'none')}</span>
+          </h2>
+          <div class="section"><h2>Cited answer</h2><pre>${escapeHtml(card.answer)}</pre></div>
+          <div class="section"><h2>Citations</h2>${cites}</div>
+          <div class="section"><h2>Recommended steps</h2><ol class="steps">${steps}</ol></div>
+          <div class="section"><h2>Likely cause / suspect deploy</h2>
+            ${sus ? `<div>${escapeHtml(sus.deploy_id)} — ${escapeHtml(sus.service)} ${escapeHtml(sus.version)} (${escapeHtml(sus.hop)})<br><span class="muted">${escapeHtml(card.suspect_deploys && card.suspect_deploys.length ? sus.change_summary : '')}</span></div>` : '<span class="muted">No suspect deployment in window.</span>'}
+          </div>
+          <div class="section"><h2>Owner &amp; escalation</h2>
+            <div>Team <strong>${escapeHtml(owner.owner_team || 'n/a')}</strong> · on-call <strong>${escapeHtml(owner.primary_on_call || 'n/a')}</strong> · ${escapeHtml(owner.slack_channel || '')}</div>
+            <div class="muted">Chain: ${escapeHtml((owner.escalation_chain || []).join(' → '))}</div>
+          </div>
+          <div class="section"><h2>Business impact</h2>
+            <div>~$${(impact.cost_per_15min || 0).toLocaleString()} / 15 min · est. total $${(impact.estimated_total_cost || 0).toLocaleString()}</div>
+            <div class="muted">SLA risk: ${escapeHtml(impact.sla_risk || 'n/a')} · regulatory: ${escapeHtml(impact.regulatory_risk || 'n/a')}</div>
+          </div>
+          <div class="section"><h2>Similar incidents</h2>
+            ${similar ? `<table><tr><th>ID</th><th>Root cause</th><th>Resolution</th><th>MTTR</th></tr>${similar}</table>` : '<span class="muted">None found.</span>'}
+          </div>
+          <div class="section"><h2>Follow-up <span class="muted">(reuses session memory)</span></h2>
+            <div class="row" style="display:flex;gap:8px;margin-top:6px">
+              <input id="followInput" placeholder="who do I escalate to? / what deploy caused this? / business impact?" />
+              <button id="followBtn" type="button">Ask</button>
+            </div>
+            <div id="followOut"></div>
+          </div>
+        </div>`;
+      $('followBtn').addEventListener('click', askFollowUp);
+      $('followInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') askFollowUp(); });
+    }
+
+    async function runTriage(ev) {
+      ev.preventDefault();
+      $('result').innerHTML = '';
+      const loader = $('loader'); loader.classList.add('on');
+      ['s1', 's2', 's3'].forEach((s) => $(s).classList.remove('done'));
+      $('triageBtn').disabled = true;
+      const payload = {
+        service: $('service').value, environment: $('environment').value,
+        severity: $('severity').value, alert_time: $('alert_time').value,
+        symptom: $('symptom').value,
+      };
+      try {
+        $('s1').classList.add('done');
+        const r = await fetch('/api/triage', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+        });
+        $('s2').classList.add('done');
+        const d = await r.json();
+        $('s3').classList.add('done');
+        if (!d.ok) { $('result').innerHTML = `<div class="card err">${escapeHtml(d.message || 'Triage failed.')}</div>`; }
+        else { renderCard(d); }
+      } catch (e) {
+        $('result').innerHTML = `<div class="card err">Network error. Is the server running?</div>`;
+      } finally {
+        loader.classList.remove('on'); $('triageBtn').disabled = false;
+      }
+    }
+
+    async function askFollowUp() {
+      const q = $('followInput').value.trim();
+      if (!q || !sessionId) return;
+      $('followBtn').disabled = true;
+      try {
+        const r = await fetch('/api/follow-up', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ session_id: sessionId, question: q }),
+        });
+        const d = await r.json();
+        const mem = d.memory_used ? 'from memory' : 'fresh lookup';
+        $('followOut').innerHTML = d.ok
+          ? `<pre>${escapeHtml(d.answer)}</pre><div class="muted">${mem} · ${escapeHtml(d.kind || '')}</div>`
+          : `<div class="err">${escapeHtml(d.message || 'Follow-up failed.')}</div>`;
+      } finally { $('followBtn').disabled = false; }
+    }
+
+    $('demoBtn').addEventListener('click', loadDemo);
+    $('alertForm').addEventListener('submit', runTriage);
+  </script>
+</body>
+</html>

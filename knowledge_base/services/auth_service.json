@@ -1,0 +1,13 @@
+{
+  "doc_id": "auth_service",
+  "title": "Auth Service Context",
+  "doc_type": "service",
+  "services": "auth-service",
+  "environments": "production, GIB-UKGC, NJ-DGE",
+  "severity_applicable": "P1,P2,P3",
+  "tags": "service ownership, auth, login",
+  "last_updated": "2026-06-08",
+  "author": "PITER AiOps",
+  "version": "1.0",
+  "body": "# Auth Service Context\n\nAuth-service owns login, session validation, token issuance, MFA handoff, and OIDC callbacks.\n\n## Owner\n\n- Team: Identity and Access\n- Primary escalation: Primary Identity and Access On-Call\n- Secondary escalation: Secondary Identity and Access On-Call\n- Channel: `#identity-access`\n\n## Dependencies\n\n- Redis token store for session and token state.\n- Customer database for user account lookup.\n- API Gateway for public auth routes.\n\n## Business Impact\n\nAuth-service is tier-0. Login failure can block all revenue-generating flows because users cannot reach wallet, payments, or product actions."
+}

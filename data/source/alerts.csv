@@ -1,0 +1,9 @@
+alert_id,timestamp,environment,service,severity,title,status,source,affected_users,error_rate_pct,business_impact,recommended_action
+ALERT-SUM-001,2026-06-10T10:03:00Z,GIB-UKGC,bet-service,P1,CRITICAL: bet-service nodes unresponsive - 100% error rate,active,PITER-Monitor,32000,100.0,critical revenue and regulatory exposure,Run PITER workflow and escalate
+ALERT-SUM-002,2026-06-10T10:06:00Z,MGM,wallet-service,P2,wallet-service operational degradation detected,active,Grafana,12000,4.04,operational degradation,Run PITER workflow and escalate
+ALERT-SUM-003,2026-06-10T10:09:00Z,MIRAGE,auth-service,P3,auth-service operational degradation detected,resolved,CloudWatch,50000,2.77,operational degradation,"Group, monitor, and review trend"
+ALERT-SUM-004,2026-06-10T10:12:00Z,GIB-UKGC,payments-service,P3,payments-service operational degradation detected,resolved,Prometheus,4500,4.83,operational degradation,"Group, monitor, and review trend"
+ALERT-SUM-005,2026-06-10T10:15:00Z,NJ-DGE,game-service,P4,game-service operational degradation detected,acknowledged,CloudWatch,0,2.38,operational degradation,"Group, monitor, and review trend"
+ALERT-SUM-006,2026-06-10T10:18:00Z,MGM,replication,P2,replication operational degradation detected,active,Prometheus,0,4.51,operational degradation,Run PITER workflow and escalate
+ALERT-SUM-007,2026-06-10T10:21:00Z,MIRAGE,redis-token-store,P4,redis-token-store operational degradation detected,active,CloudWatch,0,0.6,operational degradation,"Group, monitor, and review trend"
+ALERT-SUM-008,2026-06-10T10:24:00Z,GIB-UKGC,promotion-engine,P3,promotion-engine operational degradation detected,active,CloudWatch,9000,4.86,operational degradation,"Group, monitor, and review trend"

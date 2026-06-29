@@ -1,0 +1,28 @@
+{
+  "name": "recent_deployments",
+  "description": "Correlate recent deployments for a service near an alert time (rollback availability).",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "service": {
+        "type": "string"
+      },
+      "environment": {
+        "type": "string"
+      },
+      "alert_time": {
+        "type": "string",
+        "description": "ISO-8601 timestamp"
+      },
+      "lookback_hours": {
+        "type": "integer",
+        "default": 6
+      }
+    },
+    "required": [
+      "service",
+      "environment",
+      "alert_time"
+    ]
+  }
+}

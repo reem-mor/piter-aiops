@@ -1,0 +1,27 @@
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#0b1220','primaryTextColor':'#e2e8f0','primaryBorderColor':'#22d3ee','lineColor':'#94a3b8','clusterBkg':'#0b1220','clusterBorder':'#334155'}}}%%
+flowchart LR
+  subgraph now ["🟢 Now"]
+    A1["Bedrock Agent + KB"]
+    A2["4 Action Groups"]
+    A3["React ops console"]
+    A4["EC2 demo deploy"]
+  end
+  subgraph next ["🟡 Next"]
+    B1["Guardrails + CI alias"]
+    B2["Playwright E2E"]
+    B3["PagerDuty webhooks"]
+  end
+  subgraph vision ["🔮 Vision — PITER Ops 1.0"]
+    C1["Closed-loop incident lifecycle"]
+    C2["Multi-tenant KB"]
+    C3["Observability correlation"]
+    C4["Executive MTTR dashboard"]
+  end
+  now ==> next ==> vision
+
+  classDef nowStyle fill:#052e16,stroke:#4ade80,stroke-width:2px,color:#dcfce7
+  classDef nextStyle fill:#422006,stroke:#facc15,stroke-width:2px,color:#fef9c3
+  classDef visionStyle fill:#1e1b4b,stroke:#8b5cf6,stroke-width:2px,color:#ede9fe
+  class A1,A2,A3,A4 nowStyle
+  class B1,B2,B3 nextStyle
+  class C1,C2,C3,C4 visionStyle

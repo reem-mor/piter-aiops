@@ -1,0 +1,86 @@
+# =============================================================================
+# PITER AiOps — local artifacts only (secrets, caches, generated output)
+# SPA: build with `cd frontend && npm run build` → app/static/spa/ (gitignored)
+# =============================================================================
+
+# --- Secrets & credentials (never commit) ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+.ssh/
+.aws/
+
+# Local infra helper output (EC2 launch scripts)
+.ec2_instance_id.txt
+.sg_id.txt
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+pip-wheel-metadata/
+
+# --- Node / frontend (source in frontend/; production bundle → app/static/spa/) ---
+node_modules/
+frontend/node_modules/
+frontend/.vite/
+frontend/dist/
+app/static/spa/assets/
+app/static/spa/index.html
+scripts/node_modules/
+scripts/ec2-notification.env
+
+# --- Logs & debug captures ---
+*.log
+*.err.log
+lambda-out.json
+evaluation/pytest_output.txt
+
+# --- Local indexes / runtime DB (regenerate; not source of truth) ---
+*.faiss
+*.pkl
+*.sqlite
+*.sqlite3
+*.db
+knowledge_base/faiss_index/
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# --- Editor local state (optional; keeps repo clean on shared machines) ---
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+incoming/
+docs/review/var/
+
+# runtime state (chat history JSON store)
+var/
+
+# deploy artifacts
+piter-aiops.tar
+scripts/ssm-*.json

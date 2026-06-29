@@ -1,0 +1,40 @@
+{
+  "generated_at": "2026-06-10T09:00:00Z",
+  "providers": [
+    {
+      "name": "primary-psp",
+      "category": "payments",
+      "status": "operational",
+      "detail": "Primary payment service provider nominal.",
+      "affects": ["settlement-svc", "payment-svc"]
+    },
+    {
+      "name": "backup-psp",
+      "category": "payments",
+      "status": "operational",
+      "detail": "Backup PSP healthy and ready for failover.",
+      "affects": ["settlement-svc"]
+    },
+    {
+      "name": "aws-us-east-1",
+      "category": "cloud",
+      "status": "degraded",
+      "detail": "Elevated EBS latency reported in one AZ; monitor DB I/O.",
+      "affects": ["postgres", "api-gateway"]
+    },
+    {
+      "name": "sms-mfa-provider",
+      "category": "identity",
+      "status": "operational",
+      "detail": "SMS MFA delivery nominal.",
+      "affects": ["auth-api"]
+    },
+    {
+      "name": "cdn-edge",
+      "category": "edge",
+      "status": "operational",
+      "detail": "CDN edge nodes healthy.",
+      "affects": ["api-gateway"]
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{% if error %}
+  <article class="workflow-panel workflow-panel-error" role="alert">
+    <header class="workflow-panel-head">
+      <span class="badge badge-error">⚠ Triage error</span>
+    </header>
+    <p class="workflow-panel-body">{{ error }}</p>
+  </article>
+{% elif result %}
+  <div class="workflow-panel kb-match-panel">
+    <header class="workflow-panel-head">
+      <svg class="icon-sm text-rag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+      <span class="workflow-panel-kicker">KB match</span>
+      {% if result.latency_ms is not none %}
+        <span class="answer-meta">{{ result.latency_ms }} ms · {{ model_label|default('Bedrock') }}</span>
+      {% endif %}
+    </header>
+    <p class="workflow-kv">
+      <span class="workflow-kv-label">Question sent:</span>
+      <span class="workflow-kv-value mono">“{{ question }}”</span>
+    </p>
+    <p class="workflow-kv">
+      <span class="workflow-kv-label">Top runbook:</span>
+      <span class="workflow-kv-value strong">
+        {% if result.grounded %}
+          {{ matched_runbook or "Matched from knowledge base" }}
+        {% else %}
+          No runbook matched
+        {% endif %}
+      </span>
+    </p>
+
+    <h4 class="workflow-subhead">Suggested actions</h4>
+    {% if actions %}
+      <ol class="action-steps">
+        {% for action in actions %}
+          <li><span class="action-num">{{ loop.index }}</span><span>{{ action }}</span></li>
+        {% endfor %}
+      </ol>
+    {% else %}
+      <p class="workflow-panel-body">{{ result.answer }}</p>
+    {% endif %}
+  </div>
+
+  {% set decision = effective_decision or (alert.decision if alert else 'escalate') %}
+  {% set decision_label = 'Auto-resolve' if decision == 'auto-resolve' else ('Resolve at Tier-1' if decision == 'tier1-resolve' else 'Escalate (prepared)') %}
+  <div class="workflow-panel recommendation-panel decision-{{ decision|replace('_', '-') }}">
+    <header class="workflow-panel-head">
+      {% if decision == 'escalate' %}
+      <svg class="icon-sm decision-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+      {% elif decision == 'auto-resolve' %}
+      <svg class="icon-sm decision-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      {% else %}
+      <svg class="icon-sm decision-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      {% endif %}
+      <span class="recommendation-title">Recommendation: {{ decision_label }}</span>
+    </header>
+    <p class="workflow-reason">{{ effective_reason or (alert.decision_reason if alert else '') }}</p>
+
+    {% if alert %}
+    <div class="metrics-grid">
+      <div class="metric-tile">
+        <span class="metric-label">Baseline MTTR</span>
+        <span class="metric-value">{{ alert.baseline_min }} min</span>
+      </div>
+      <div class="metric-tile">
+        <span class="metric-label">With assistant</span>
+        <span class="metric-value metric-good">{{ alert.assisted_min }} min</span>
+      </div>
+      <div class="metric-tile">
+        <span class="metric-label">Impact avoided</span>
+        <span class="metric-value metric-good">${{ "{:,}".format(impact_avoided) }}</span>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  {% if alert %}
+  <div class="workflow-resolve-host"
+       data-alert-id="{{ alert.id }}"
+       data-saved-min="{{ saved_min }}"
+       data-saved-impact="{{ impact_avoided }}">
+    <button type="button" class="btn-secondary btn-resolve" id="mark-resolved-btn">
+      <svg class="icon-sm text-resolution" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      Mark alert as resolved
+    </button>
+    <p class="workflow-resolved-note" id="workflow-resolved-note" hidden>
+      <svg class="icon-xs text-resolution" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      Logged · counted in business impact saved
+    </p>
+  </div>
+  {% endif %}
+{% endif %}

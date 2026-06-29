@@ -1,0 +1,14 @@
+# Ruff config for PITER AiOps (standalone-ready).
+target-version = "py312"
+line-length = 100
+extend-exclude = ["archive", "**/static", "**/node_modules", "**/.venv", "**/dist", "**/build"]
+
+[lint]
+# Correctness-focused: pyflakes + a subset of pycodestyle. Style churn (import order)
+# is intentionally left off.
+select = ["F", "E4", "E7", "E9"]
+ignore = ["E402"]
+
+[lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"tests/**" = ["F811", "F401"]

@@ -1,0 +1,90 @@
+openapi: 3.0.0
+info:
+  title: PITER Service Context
+  version: 1.0.0
+  description: Owner lookup and business impact scoring for triage.
+
+paths:
+  /owner:
+    get:
+      summary: Lookup owning team and escalation path
+      description: Returns owner team, on-call channel, and escalation path from the service catalog.
+      operationId: lookupOwner
+      parameters:
+        - name: service
+          in: query
+          required: true
+          description: Service name e.g. auth-service
+          schema:
+            type: string
+        - name: environment
+          in: query
+          required: true
+          description: Environment code e.g. prod
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Owner metadata
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  service:
+                    type: string
+                    description: Service queried
+                  owner_team:
+                    type: string
+                    description: Owning team name
+                  escalation:
+                    type: string
+                    description: Escalation path
+                  on_call_channel:
+                    type: string
+                    description: On-call notification channel
+
+  /impact:
+    get:
+      summary: Score business impact for service and severity
+      description: Returns revenue impact per hour and tier from the impact matrix.
+      operationId: scoreBusinessImpact
+      parameters:
+        - name: service
+          in: query
+          required: true
+          description: Service name e.g. auth-service
+          schema:
+            type: string
+        - name: environment
+          in: query
+          required: true
+          description: Environment code e.g. prod
+          schema:
+            type: string
+        - name: severity
+          in: query
+          required: true
+          description: Alert severity e.g. P2
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Impact scores
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  service:
+                    type: string
+                    description: Service queried
+                  severity:
+                    type: string
+                    description: Alert severity
+                  revenue_impact_usd_per_hour:
+                    type: integer
+                    description: Estimated revenue at risk per hour USD
+                  impact_tier:
+                    type: string
+                    description: Impact tier label

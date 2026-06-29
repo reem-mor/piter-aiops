@@ -1,0 +1,82 @@
+{
+  "services": [
+    {
+      "name": "postgres",
+      "display_name": "PostgreSQL Primary",
+      "owner_team": "platform-dba",
+      "on_call": "dba-oncall",
+      "secondary_oncall": "vp-engineering",
+      "slack_channel": "#inc-platform-db",
+      "escalation_path": "platform-dba -> dba-oncall -> vp-engineering",
+      "pagerduty_service": "PD-PLATFORM-DB",
+      "environments": ["NJ-DGE", "GIB", "MGM", "MIRAGE"],
+      "depends_on": [],
+      "depended_by": ["settlement-svc", "checkout-api", "auth-api"]
+    },
+    {
+      "name": "settlement-svc",
+      "display_name": "Settlement Service",
+      "owner_team": "payments",
+      "on_call": "payments-oncall",
+      "secondary_oncall": "payments-l2",
+      "slack_channel": "#inc-payments",
+      "escalation_path": "payments-l2 -> payments-oncall",
+      "pagerduty_service": "PD-PAYMENTS",
+      "environments": ["NJ-DGE", "GIB"],
+      "depends_on": ["postgres", "payment-svc"],
+      "depended_by": []
+    },
+    {
+      "name": "checkout-api",
+      "display_name": "Checkout API",
+      "owner_team": "checkout",
+      "on_call": "checkout-oncall",
+      "secondary_oncall": "checkout-l2",
+      "slack_channel": "#inc-checkout",
+      "escalation_path": "checkout-l2 -> checkout-oncall",
+      "pagerduty_service": "PD-CHECKOUT",
+      "environments": ["NJ-DGE", "GIB"],
+      "depends_on": ["postgres", "api-gateway"],
+      "depended_by": []
+    },
+    {
+      "name": "auth-api",
+      "display_name": "Authentication API",
+      "owner_team": "identity",
+      "on_call": "identity-oncall",
+      "secondary_oncall": "identity-l2",
+      "slack_channel": "#inc-identity",
+      "escalation_path": "identity-l2 -> identity-oncall",
+      "pagerduty_service": "PD-IDENTITY",
+      "environments": ["NJ-DGE", "GIB", "MGM"],
+      "depends_on": ["postgres", "redis-cache"],
+      "depended_by": ["checkout-api"]
+    },
+    {
+      "name": "api-gateway",
+      "display_name": "API Gateway Edge",
+      "owner_team": "edge",
+      "on_call": "edge-oncall",
+      "secondary_oncall": "edge-l2",
+      "slack_channel": "#inc-edge",
+      "escalation_path": "edge-l2 -> edge-oncall",
+      "pagerduty_service": "PD-EDGE",
+      "environments": ["NJ-DGE", "GIB"],
+      "depends_on": [],
+      "depended_by": ["checkout-api", "auth-api"]
+    },
+    {
+      "name": "bet-service",
+      "display_name": "Bet Service",
+      "owner_team": "Betting Core",
+      "on_call": "Tom Friedman",
+      "secondary_oncall": "Liat Goldberg",
+      "slack_channel": "#betting-core",
+      "escalation_path": "Betting Core -> Yossi Avraham -> PD-BET-001",
+      "pagerduty_service": "PD-BET-001",
+      "environments": ["NJ-DGE", "GIB-UKGC", "MGM", "MIRAGE"],
+      "depends_on": ["auth-api", "postgres"],
+      "depended_by": ["game-service"]
+    }
+  ]
+}

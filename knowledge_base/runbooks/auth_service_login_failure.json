@@ -1,0 +1,13 @@
+{
+  "doc_id": "auth_service_login_failure",
+  "title": "Auth Service Login Failure Runbook",
+  "doc_type": "runbook",
+  "services": "auth-service, redis-token-store, customer-db",
+  "environments": "production, GIB-UKGC, NJ-DGE",
+  "severity_applicable": "P1,P2,P3",
+  "tags": "auth, login, deployment, tokens, session, outage",
+  "last_updated": "2026-06-08",
+  "author": "PITER AiOps",
+  "version": "1.0",
+  "body": "# Auth Service Login Failure Runbook\n\nUse this runbook when users cannot log in, token validation fails, MFA loops, or auth-service error rate increases after a production deployment.\n\n## Investigation Steps\n\n1. Confirm the production error rate, affected markets, and whether login failures started within 60 minutes of a deployment.\n2. Check recent auth-service deployments, feature flags, schema migrations, and token-signing key changes.\n3. Validate auth-service pod health, readiness probes, and `/health/ready` responses.\n4. Check Redis token store latency, evictions, memory pressure, and primary/replica status.\n5. Check customer-db connectivity for connection pool exhaustion, lock waits, and migration locks.\n6. Confirm OIDC discovery and public API Gateway routes are returning valid responses.\n\n## Triage Decision Tree\n\n- If the latest deployment is within the last hour and failures started immediately after it, prepare rollback first.\n- If login returns 401 for valid users and Redis has evictions or high latency, follow the Redis token store runbook.\n- If auth-service pods are healthy but API Gateway returns 5xx, follow the API Gateway 5xx runbook.\n- If customer-db has lock waits or exhausted connections, follow the database connectivity runbook.\n\n## Remediation\n\n1. Freeze additional auth-service releases until the incident commander approves.\n2. Roll back the latest auth-service deployment if deployment correlation is strong and rollback is available.\n3. Disable newly released feature flags for token validation, MFA routing, or session write behavior.\n4. Restart only unhealthy auth-service pods after capturing logs.\n5. Validate successful login rate and token issuance before declaring mitigation.\n\n## Verification\n\n- `auth_login_success_rate` returns to baseline.\n- `auth_login_error_rate` stays below 1% for 10 minutes.\n- Redis token writes and reads are stable.\n- Synthetic login tests pass in production.\n\n## Escalation\n\nEscalate P1/P2 login incidents to Identity and Access primary on-call, then secondary on-call if no acknowledgement within the policy window. Produce a safe escalation preview only; do not send real escalation messages automatically."
+}

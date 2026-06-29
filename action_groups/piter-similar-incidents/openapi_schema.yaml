@@ -1,0 +1,57 @@
+openapi: 3.0.0
+info:
+  title: PITER Similar Incidents
+  version: 1.0.0
+  description: Find similar historical incidents for pattern matching.
+
+paths:
+  /similar:
+    get:
+      summary: Find similar past incidents by service and symptom
+      description: Searches incident history for matching service and symptom keywords.
+      operationId: findSimilarIncidents
+      parameters:
+        - name: service
+          in: query
+          required: true
+          description: Service name e.g. auth-service
+          schema:
+            type: string
+        - name: symptom
+          in: query
+          required: true
+          description: Alert symptom text e.g. login failures after deploy
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          description: Max incidents to return
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Similar incidents list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  service:
+                    type: string
+                    description: Service queried
+                  similar_incidents:
+                    type: array
+                    description: Ranked similar past incidents
+                    items:
+                      type: object
+                      properties:
+                        incident_id:
+                          type: string
+                          description: Historical incident id
+                        symptom:
+                          type: string
+                          description: Recorded symptom
+                        resolution:
+                          type: string
+                          description: How it was resolved

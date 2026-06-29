@@ -1,0 +1,13 @@
+{
+  "doc_id": "payment_service",
+  "title": "Payment Service Context",
+  "doc_type": "service",
+  "services": "payment-service, payments-service",
+  "environments": "production, GIB-UKGC, NJ-DGE",
+  "severity_applicable": "P1,P2,P3",
+  "tags": "service ownership, payments, provider",
+  "last_updated": "2026-06-08",
+  "author": "PITER AiOps",
+  "version": "1.0",
+  "body": "# Payment Service Context\n\nPayment-service owns authorization, provider routing, deposit success, withdrawal processing, and payment-provider failover.\n\n## Owner\n\n- Team: Payments\n- Primary escalation: Primary Payments On-Call\n- Secondary escalation: Secondary Payments On-Call\n- Channel: `#payments`\n\n## Dependencies\n\n- External payment gateway.\n- Wallet service.\n- API Gateway.\n\n## Business Impact\n\nPayment incidents can cause direct revenue loss, customer trust damage, and PCI-DSS/compliance follow-up."
+}

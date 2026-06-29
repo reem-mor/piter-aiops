@@ -1,0 +1,88 @@
+{
+  "default_policy": {
+    "P1": {
+      "notify_immediately": [
+        "primary_on_call_role",
+        "secondary_on_call_role",
+        "team_lead",
+        "incident_commander"
+      ],
+      "max_response_minutes": 5,
+      "war_room": true,
+      "confirmation_required_for_external_notification": true
+    },
+    "P2": {
+      "notify_immediately": [
+        "primary_on_call_role",
+        "team_lead"
+      ],
+      "max_response_minutes": 15,
+      "war_room": false,
+      "confirmation_required_for_external_notification": true
+    },
+    "P3": {
+      "notify_immediately": [
+        "primary_on_call_role"
+      ],
+      "max_response_minutes": 30,
+      "war_room": false,
+      "confirmation_required_for_external_notification": false
+    },
+    "P4": {
+      "notify_immediately": [],
+      "next_business_day": true,
+      "war_room": false,
+      "confirmation_required_for_external_notification": false
+    }
+  },
+  "regulatory_overrides": {
+    "UKGC": {
+      "P1": {
+        "additional_notify": [
+          "compliance_officer_role"
+        ],
+        "reporting_window_hours": 1,
+        "report_to": "UKGC Compliance Desk"
+      }
+    },
+    "DGE": {
+      "P1": {
+        "additional_notify": [
+          "compliance_officer_role"
+        ],
+        "reporting_window_hours": 4,
+        "report_to": "NJ-DGE Reporting"
+      }
+    },
+    "MGM": {
+      "P1": {
+        "additional_notify": [
+          "partner_operations_role"
+        ],
+        "reporting_window_hours": 2,
+        "report_to": "MGM Operations"
+      }
+    },
+    "PCI-DSS": {
+      "P1": {
+        "additional_notify": [
+          "security_compliance_role"
+        ],
+        "reporting_window_hours": 24,
+        "report_to": "PCI incident review"
+      }
+    }
+  },
+  "notification_safety": {
+    "default_mode": "mock",
+    "allowed_modes": [
+      "mock",
+      "preview",
+      "live"
+    ],
+    "live_requires_confirmation": true,
+    "do_not_store_raw_contacts_in_git": true,
+    "recipient_source": "environment variables, AWS Parameter Store, or Secrets Manager",
+    "max_sends_per_incident": 1
+  }
+}

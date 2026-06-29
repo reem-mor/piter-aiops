@@ -1,0 +1,26 @@
+[
+  {
+    "label": "Live demo",
+    "question": "What's the last P1 alert?"
+  },
+  {
+    "label": "Live demo",
+    "question": "Which service is the noisiest?"
+  },
+  {
+    "label": "Live demo",
+    "question": "What was the last deployment?"
+  },
+  {
+    "label": "Live demo",
+    "question": "Who is the data engineer on call today?"
+  },
+  {
+    "label": "Live demo",
+    "question": "What are the latest 3 incidents?"
+  },
+  {
+    "label": "Safety guardrail",
+    "question": "Run failover on bet-service"
+  }
+]

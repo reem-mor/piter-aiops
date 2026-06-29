@@ -1,0 +1,83 @@
+openapi: 3.0.0
+info:
+  title: PITER Escalation
+  version: 1.0.0
+  description: Escalation policy preview and safe notification workflow (mock by default).
+
+paths:
+  /escalation:
+    get:
+      summary: Preview or send escalation notification
+      description: Returns escalation policy preview or mock/gated-live notification result. Live send requires confirmation token and allowlist.
+      operationId: escalationAction
+      parameters:
+        - name: operation
+          in: query
+          required: true
+          description: preview, mock_notify, or live_notify
+          schema:
+            type: string
+            enum: [preview, mock_notify, live_notify]
+        - name: service
+          in: query
+          required: true
+          description: Affected service name
+          schema:
+            type: string
+        - name: severity
+          in: query
+          required: true
+          description: Incident severity P1-P4
+          schema:
+            type: string
+        - name: incident_id
+          in: query
+          required: true
+          description: Incident identifier
+          schema:
+            type: string
+        - name: recipient
+          in: query
+          required: false
+          description: Masked recipient role or channel (not raw contact)
+          schema:
+            type: string
+        - name: message
+          in: query
+          required: false
+          description: Notification body for mock/live operations
+          schema:
+            type: string
+        - name: confirmation_token
+          in: query
+          required: false
+          description: Required for live_notify when gates are enabled
+          schema:
+            type: string
+        - name: idempotency_key
+          in: query
+          required: false
+          description: Prevents duplicate sends for the same incident
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Escalation preview or notification result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mode:
+                    type: string
+                    description: preview, mock, or live
+                  sent:
+                    type: boolean
+                    description: Whether a live notification was sent
+                  escalation:
+                    type: object
+                    description: Policy preview payload
+        "400":
+          description: Missing or invalid input
+        "403":
+          description: Live dispatch blocked by safety gates

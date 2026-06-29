@@ -1,0 +1,131 @@
+[
+  {
+    "id": "A-2041",
+    "severity": "P2",
+    "service": "postgres / prod-db-1",
+    "title": "Postgres CPU > 90% for 5m",
+    "fired_at": "14:02 UTC",
+    "source": "CloudWatch · prod-db-cpu",
+    "question": "Postgres CPU is 95% on prod-db-1 — what is the runbook?",
+    "matched_runbook": "database_connectivity.json",
+    "actions": [
+      "Confirm alert and list long-running queries via pg_stat_activity",
+      "Cancel queries running longer than 5 minutes",
+      "Check missing indexes (seq_scan vs idx_scan)",
+      "Fail over to replica with Patroni if CPU stays high",
+      "Escalate to DBA on-call if CPU > 90% for 15 minutes"
+    ],
+    "decision": "tier1-resolve",
+    "decision_reason": "Known runbook with deterministic steps. Tier-1 can act before paging DBA.",
+    "baseline_min": 22,
+    "assisted_min": 6,
+    "impact_per_min": 180
+  },
+  {
+    "id": "A-2042",
+    "severity": "P1",
+    "service": "checkout-api",
+    "title": "API 5xx rate > 2% for 4m",
+    "fired_at": "14:05 UTC",
+    "source": "Datadog · api_5xx_rate",
+    "question": "API 5xx rate is above 2% on checkout — what should I check?",
+    "matched_runbook": "api_gateway_5xx.json",
+    "actions": [
+      "Check recent deployments and correlate with 5xx spike",
+      "Tail checkout-api and gateway logs for ERROR patterns",
+      "Check database CPU and slow queries",
+      "Verify payment and dependency health",
+      "Roll back if issue matches recent bad deployment"
+    ],
+    "decision": "escalate",
+    "decision_reason": "Customer revenue at risk. Assistant prepares rollback and escalation path.",
+    "baseline_min": 18,
+    "assisted_min": 4,
+    "impact_per_min": 920
+  },
+  {
+    "id": "A-2043",
+    "severity": "P3",
+    "service": "email-worker",
+    "title": "Queue lag > 30s for 5m",
+    "fired_at": "14:11 UTC",
+    "source": "Prometheus · queue_lag_seconds",
+    "question": "Queue lag is above 30 seconds — what should I do?",
+    "matched_runbook": "deployment_rollback.json",
+    "actions": [
+      "Check worker pod health and restart counts",
+      "Compare queue depth to baseline",
+      "Review recent worker deploys",
+      "Scale workers if within autoscaling limits",
+      "Inspect dead-letter queue for poison messages"
+    ],
+    "decision": "tier1-resolve",
+    "decision_reason": "Often traffic-shaped. Scale and DLQ inspection are safe Tier-1 actions.",
+    "baseline_min": 9,
+    "assisted_min": 1,
+    "impact_per_min": 25
+  },
+  {
+    "id": "A-2044",
+    "severity": "P2",
+    "service": "auth-service",
+    "title": "Auth login failures > 5% for 5m",
+    "fired_at": "14:18 UTC",
+    "source": "Prometheus · auth_login_errors",
+    "question": "Users cannot log in after deployment — what should I check?",
+    "matched_runbook": "auth_service_login_failure.json",
+    "actions": [
+      "Check auth-service /health and /ready endpoints",
+      "Search logs for OIDC and database errors",
+      "Validate JWT_SECRET, AUTH_DB_URL, TOKEN_ISSUER",
+      "Verify Postgres and Redis connectivity",
+      "Roll back deployment if failure rate remains high"
+    ],
+    "decision": "escalate",
+    "decision_reason": "Login failures after deploy often need auth team if rollback does not restore service.",
+    "baseline_min": 15,
+    "assisted_min": 5,
+    "impact_per_min": 120
+  },
+  {
+    "id": "A-2045",
+    "severity": "P3",
+    "service": "logs-volume / prod-app-2",
+    "title": "Disk usage > 85% for 15m",
+    "fired_at": "14:25 UTC",
+    "source": "CloudWatch · disk_used_percent",
+    "question": "Disk usage is above 85% on prod-app-2 — what should I do first?",
+    "matched_runbook": "monitoring_alerts_reference.md",
+    "actions": [
+      "Identify mount point and largest log directories",
+      "Rotate or compress application logs per SOP",
+      "Extend volume if rotation is insufficient",
+      "Escalate if disk crosses 90% during business hours"
+    ],
+    "decision": "auto-resolve",
+    "decision_reason": "Log rotation is a standard Tier-1 action when documented in monitoring reference.",
+    "baseline_min": 8,
+    "assisted_min": 2,
+    "impact_per_min": 15
+  },
+  {
+    "id": "A-2046",
+    "severity": "P4",
+    "service": "staging-metrics",
+    "title": "Non-prod scrape timeout (noise)",
+    "fired_at": "14:28 UTC",
+    "source": "Prometheus · scrape_duration",
+    "question": "Staging metrics scrape is slow — is this actionable?",
+    "matched_runbook": "monitoring_alerts_reference.md",
+    "actions": [
+      "Confirm environment is non-production",
+      "Suppress or snooze if below SLO impact threshold",
+      "Log for weekly hygiene review"
+    ],
+    "decision": "auto-resolve",
+    "decision_reason": "P4 noise — no customer impact. Safe to suppress after environment check.",
+    "baseline_min": 3,
+    "assisted_min": 0,
+    "impact_per_min": 0
+  }
+]

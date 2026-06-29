@@ -1,0 +1,31 @@
+{
+  "services": [
+    {
+      "service": "auth-service",
+      "owner": "Identity and Access",
+      "criticality": "tier-0",
+      "dependencies": ["redis-token-store", "customer-db", "api-gateway"],
+      "sla": "99.99%",
+      "business_impact": "Login failure blocks all authenticated user journeys.",
+      "escalation_team": "Primary Identity and Access On-Call"
+    },
+    {
+      "service": "redis-token-store",
+      "owner": "Identity and Access",
+      "criticality": "tier-0",
+      "dependencies": ["auth-service"],
+      "sla": "99.99%",
+      "business_impact": "Token store degradation causes login and session failures.",
+      "escalation_team": "Primary Identity and Access On-Call"
+    },
+    {
+      "service": "api-gateway",
+      "owner": "Edge Platform",
+      "criticality": "tier-0",
+      "dependencies": ["auth-service", "payment-service"],
+      "sla": "99.95%",
+      "business_impact": "Gateway failure can make healthy services unreachable.",
+      "escalation_team": "Primary Edge Platform On-Call"
+    }
+  ]
+}

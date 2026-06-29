@@ -1,0 +1,136 @@
+{
+  "currency": "USD",
+  "calculation_note": "Sanitized demo estimates for presentation. Values are not real company financial data.",
+  "services": {
+    "bet-service": {
+      "service_tier": "tier-0",
+      "revenue_per_minute_usd": 9800,
+      "active_users_typical": 32000,
+      "sla_target_uptime_pct": 99.95,
+      "regulatory_exposure": [
+        "UKGC",
+        "DGE",
+        "MGM"
+      ],
+      "p1_cost_per_minute_usd": 9800,
+      "p2_cost_per_minute_usd": 4116,
+      "p3_cost_per_minute_usd": 980,
+      "p4_cost_per_minute_usd": 0,
+      "reputation_risk": "high",
+      "customer_trust_impact": "customer-facing"
+    },
+    "wallet-service": {
+      "service_tier": "tier-0",
+      "revenue_per_minute_usd": 4200,
+      "active_users_typical": 12000,
+      "sla_target_uptime_pct": 99.95,
+      "regulatory_exposure": [
+        "UKGC",
+        "DGE"
+      ],
+      "p1_cost_per_minute_usd": 4200,
+      "p2_cost_per_minute_usd": 1764,
+      "p3_cost_per_minute_usd": 420,
+      "p4_cost_per_minute_usd": 0,
+      "reputation_risk": "high",
+      "customer_trust_impact": "customer-facing"
+    },
+    "auth-service": {
+      "service_tier": "tier-0",
+      "revenue_per_minute_usd": 14000,
+      "active_users_typical": 50000,
+      "sla_target_uptime_pct": 99.95,
+      "regulatory_exposure": [
+        "UKGC",
+        "DGE"
+      ],
+      "p1_cost_per_minute_usd": 14000,
+      "p2_cost_per_minute_usd": 5880,
+      "p3_cost_per_minute_usd": 1400,
+      "p4_cost_per_minute_usd": 0,
+      "reputation_risk": "high",
+      "customer_trust_impact": "customer-facing"
+    },
+    "payments-service": {
+      "service_tier": "tier-0",
+      "revenue_per_minute_usd": 2100,
+      "active_users_typical": 4500,
+      "sla_target_uptime_pct": 99.95,
+      "regulatory_exposure": [
+        "UKGC",
+        "DGE",
+        "PCI-DSS"
+      ],
+      "p1_cost_per_minute_usd": 2100,
+      "p2_cost_per_minute_usd": 882,
+      "p3_cost_per_minute_usd": 210,
+      "p4_cost_per_minute_usd": 0,
+      "reputation_risk": "high",
+      "customer_trust_impact": "customer-facing"
+    },
+    "game-service": {
+      "service_tier": "tier-1",
+      "revenue_per_minute_usd": 6500,
+      "active_users_typical": 28000,
+      "sla_target_uptime_pct": 99.9,
+      "regulatory_exposure": [
+        "UKGC",
+        "DGE",
+        "MGM"
+      ],
+      "p1_cost_per_minute_usd": 6500,
+      "p2_cost_per_minute_usd": 2730,
+      "p3_cost_per_minute_usd": 650,
+      "p4_cost_per_minute_usd": 0,
+      "reputation_risk": "medium",
+      "customer_trust_impact": "customer-facing"
+    },
+    "replication": {
+      "service_tier": "tier-0",
+      "revenue_per_minute_usd": 8000,
+      "active_users_typical": 0,
+      "sla_target_uptime_pct": 99.95,
+      "regulatory_exposure": [
+        "UKGC",
+        "DGE"
+      ],
+      "p1_cost_per_minute_usd": 8000,
+      "p2_cost_per_minute_usd": 3360,
+      "p3_cost_per_minute_usd": 800,
+      "p4_cost_per_minute_usd": 0,
+      "reputation_risk": "high",
+      "customer_trust_impact": "indirect platform impact"
+    },
+    "redis-token-store": {
+      "service_tier": "tier-0",
+      "revenue_per_minute_usd": 11000,
+      "active_users_typical": 50000,
+      "sla_target_uptime_pct": 99.95,
+      "regulatory_exposure": [
+        "UKGC",
+        "DGE"
+      ],
+      "p1_cost_per_minute_usd": 11000,
+      "p2_cost_per_minute_usd": 4620,
+      "p3_cost_per_minute_usd": 1100,
+      "p4_cost_per_minute_usd": 0,
+      "reputation_risk": "high",
+      "customer_trust_impact": "customer-facing"
+    },
+    "promotion-engine": {
+      "service_tier": "tier-2",
+      "revenue_per_minute_usd": 1200,
+      "active_users_typical": 9000,
+      "sla_target_uptime_pct": 99.9,
+      "regulatory_exposure": [
+        "UKGC"
+      ],
+      "p1_cost_per_minute_usd": 1200,
+      "p2_cost_per_minute_usd": 504,
+      "p3_cost_per_minute_usd": 120,
+      "p4_cost_per_minute_usd": 0,
+      "reputation_risk": "medium",
+      "customer_trust_impact": "customer-facing"
+    }
+  }
+}

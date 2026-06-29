@@ -1,0 +1,78 @@
+{% if error %}
+  <article class="answer-card error">
+    <header class="answer-header">
+      <span class="badge badge-error">⚠ Error</span>
+      {% if question %}<span class="answer-question">“{{ question }}”</span>{% endif %}
+    </header>
+    <p class="answer-body">{{ error }}</p>
+  </article>
+{% elif result %}
+  {% set payload = result.to_dict() %}
+  {% set sections = payload.answer_sections %}
+  <article class="answer-card {% if result.grounded %}grounded{% else %}no-match{% endif %}">
+    <header class="answer-header">
+      {% if result.grounded %}
+        <span class="badge badge-grounded">✓ Grounded · {{ result.citations|length }} source{{ '' if result.citations|length == 1 else 's' }}</span>
+      {% else %}
+        <span class="badge badge-nomatch">∅ Not in knowledge base</span>
+      {% endif %}
+      <span class="answer-question">“{{ question }}”</span>
+      {% if result.latency_ms is not none %}
+        <span class="answer-meta">{{ result.latency_ms }} ms · {{ model_label|default('Bedrock') }}</span>
+      {% endif %}
+    </header>
+
+    <section class="answer-section">
+      <h3 class="citations-title">Answer</h3>
+      <p class="answer-body">{{ sections.summary or result.answer }}</p>
+    </section>
+
+    {% if sections.steps and result.grounded %}
+      <section class="answer-section">
+        <h3 class="citations-title">Recommended steps</h3>
+        <ol class="answer-steps">
+          {% for step in sections.steps %}
+            <li class="answer-body">{{ step }}</li>
+          {% endfor %}
+        </ol>
+      </section>
+    {% endif %}
+
+    {% if sections.escalation and result.grounded %}
+      <section class="answer-section">
+        <h3 class="citations-title">Escalation</h3>
+        <ul class="answer-escalation">
+          {% for item in sections.escalation %}
+            <li class="answer-body">{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+
+    {% if sections.why and result.grounded %}
+      <section class="answer-section">
+        <h3 class="citations-title">Why this answer</h3>
+        <p class="answer-body text-muted">{{ sections.why }}</p>
+      </section>
+    {% endif %}
+
+    {% if result.citations %}
+      <section class="citations">
+        <h3 class="citations-title">Retrieved citations</h3>
+        <ol class="citation-list">
+          {% for c in payload.citations %}
+            <li class="citation-card">
+              <div class="citation-head">
+                <span>[{{ c.index }}] {{ c.source_label }}{% if c.chunk_index is not none %} · chunk {{ c.chunk_index }}{% endif %}</span>
+                {% if c.score is not none %}
+                  <span class="citation-score">Score: {{ '%.2f'|format(c.score) }}</span>
+                {% endif %}
+              </div>
+              <p class="citation-snippet">{{ c.preview or c.snippet[:220] }}</p>
+            </li>
+          {% endfor %}
+        </ol>
+      </section>
+    {% endif %}
+  </article>
+{% endif %}

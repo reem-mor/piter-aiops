@@ -1,0 +1,15 @@
+doc_id,path,doc_type,title,services,format
+api_gateway_5xx,runbooks/api_gateway_5xx.json,runbook,API Gateway 5xx Troubleshooting Runbook,"api-gateway, auth-service, payment-service",json
+auth_service_login_failure,runbooks/auth_service_login_failure.json,runbook,Auth Service Login Failure Runbook,"auth-service, redis-token-store, customer-db",json
+database_connectivity,runbooks/database_connectivity.json,runbook,Database Connectivity Runbook,"customer-db, postgres, auth-service, payment-service",json
+deployment_rollback,runbooks/deployment_rollback.json,runbook,Deployment Rollback Runbook,"auth-service, api-gateway, bet-service, payment-service",json
+redis_token_store_degradation,runbooks/redis_token_store_degradation.json,runbook,Redis Token Store Degradation Runbook,"redis-token-store, auth-service",json
+historical_auth_incidents,incidents/historical_auth_incidents.json,incident,Historical Auth Incidents,"auth-service, redis-token-store",json
+historical_deployment_incidents,incidents/historical_deployment_incidents.json,incident,Historical Deployment Incidents,"auth-service, bet-service, api-gateway",json
+similar_incidents_examples,incidents/similar_incidents_examples.json,incident,Similar Incident Examples,"auth-service, api-gateway, redis-token-store, customer-db",json
+api_gateway,services/api_gateway.json,service,API Gateway Context,api-gateway,json
+auth_service,services/auth_service.json,service,Auth Service Context,auth-service,json
+payment_service,services/payment_service.json,service,Payment Service Context,"payment-service, payments-service",json
+business_impact_guide,piter/business_impact_guide.json,guide,Business Impact Interpretation,all,json
+escalation_policies_guide,piter/escalation_policies_guide.json,policy,PITER Escalation Policy,all,json
+piter_workflow,piter/piter_workflow.json,policy,PITER Incident Response Workflow,all,json

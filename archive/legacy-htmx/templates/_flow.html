@@ -1,0 +1,51 @@
+<section id="flow" class="section">
+  <div class="section-inner">
+    <h2 class="section-title">How it works, step by step</h2>
+    <p class="section-lead">
+      Each step has a plain-English version for non-technical reviewers and a technical note for engineers.
+      Use the <button type="button" class="inline-link-btn" data-open-guide>system guide</button> for the live request path behind triage and Q&amp;A.
+    </p>
+    <div class="flow-steps">
+      <article class="flow-step glass">
+        <div class="flow-step-num">01</div>
+        <div>
+          <strong>Collect runbooks &amp; incident history</strong>
+          <p>Runbooks, alert exports, and post-mortems uploaded to S3 for the Knowledge Base data source.</p>
+          <p class="flow-step-tech"><span class="tech-label">Technical:</span> PDF / MD / TXT / CSV / DOCX · S3 sync</p>
+        </div>
+      </article>
+      <article class="flow-step glass">
+        <div class="flow-step-num">02</div>
+        <div>
+          <strong>Build the Bedrock Knowledge Base</strong>
+          <p>Bedrock chunks, embeds, and indexes documents so retrieval knows where to look at query time.</p>
+          <p class="flow-step-tech"><span class="tech-label">Technical:</span> Bedrock KB + vector index · StartIngestionJob</p>
+        </div>
+      </article>
+      <article class="flow-step glass">
+        <div class="flow-step-num">03</div>
+        <div>
+          <strong>Flask triage UI (boto3)</strong>
+          <p>On-call asks a question; Flask calls RetrieveAndGenerate and renders answer, citations, and workflow reasoning.</p>
+          <p class="flow-step-tech"><span class="tech-label">Technical:</span> POST /ask · POST /workflow/triage · HTMX partials</p>
+        </div>
+      </article>
+      <article class="flow-step glass">
+        <div class="flow-step-num">04</div>
+        <div>
+          <strong>Containerize with Docker</strong>
+          <p>Same image on laptop, CI, and EC2 — no environment drift.</p>
+          <p class="flow-step-tech"><span class="tech-label">Technical:</span> docker compose · port 8080 · healthcheck</p>
+        </div>
+      </article>
+      <article class="flow-step glass">
+        <div class="flow-step-num">05</div>
+        <div>
+          <strong>Deploy to EC2 &amp; demo</strong>
+          <p>Public URL for reviewers and on-call smoke tests, then cleanup to avoid cost.</p>
+          <p class="flow-step-tech"><span class="tech-label">Technical:</span> IAM instance profile · security group · screenshots</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

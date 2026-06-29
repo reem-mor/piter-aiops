@@ -1,0 +1,64 @@
+openapi: 3.0.0
+info:
+  title: PITER Recent Deployments
+  version: 1.0.0
+  description: Correlate recent deployments including dependency hops for incident triage.
+
+paths:
+  /correlate:
+    get:
+      summary: Correlate recent deployments including dependency hops
+      description: Returns deployments for the service and dependents within the lookback window.
+      operationId: correlateDeployments
+      parameters:
+        - name: service
+          in: query
+          required: true
+          description: Service name e.g. auth-service
+          schema:
+            type: string
+        - name: environment
+          in: query
+          required: true
+          description: Environment code e.g. prod
+          schema:
+            type: string
+        - name: alert_time
+          in: query
+          required: true
+          description: ISO-8601 alert time e.g. 2026-06-10T09:00:00Z
+          schema:
+            type: string
+        - name: lookback_hours
+          in: query
+          required: false
+          description: Hours to look back for deploys (default 6)
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deployment correlation result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  service:
+                    type: string
+                    description: Service queried
+                  environment:
+                    type: string
+                    description: Environment code
+                  deployments:
+                    type: array
+                    description: Matching deployments in lookback window
+                    items:
+                      type: object
+                  likely_deploy_correlation:
+                    type: boolean
+                    description: Whether a deploy likely correlates with the alert
+                  dependency_hops:
+                    type: array
+                    description: Dependent services included in search
+                    items:
+                      type: string

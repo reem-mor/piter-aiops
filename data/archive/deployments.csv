@@ -1,0 +1,5 @@
+deployment_id,service,environment,version,deployed_at,status,owner,change_summary
+DEP-AUTH-2026-06-08-001,auth-service,production,v5.19.6,2026-06-08T08:35:00Z,success,Identity and Access,Token validation refactor and session TTL handling
+DEP-AUTH-2026-06-08-002,redis-token-store,production,v2.7.4,2026-06-08T07:55:00Z,success,Identity and Access,Redis client pool configuration refresh
+DEP-GW-2026-06-08-003,api-gateway,production,v3.12.1,2026-06-08T06:20:00Z,success,Edge Platform,OIDC callback route normalization
+DEP-BET-2026-06-10-001,bet-service,GIB-UKGC,v5.16.1,2026-06-10T09:55:00Z,rolled_back,Betting Core,Retry policy change suspected in P1 storm

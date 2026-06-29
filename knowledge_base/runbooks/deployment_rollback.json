@@ -1,0 +1,13 @@
+{
+  "doc_id": "deployment_rollback",
+  "title": "Deployment Rollback Runbook",
+  "doc_type": "runbook",
+  "services": "auth-service, api-gateway, bet-service, payment-service",
+  "environments": "production, GIB-UKGC, NJ-DGE",
+  "severity_applicable": "P1,P2",
+  "tags": "deployment, rollback, release, mitigation",
+  "last_updated": "2026-06-08",
+  "author": "PITER AiOps",
+  "version": "1.0",
+  "body": "# Deployment Rollback Runbook\n\nUse this runbook when an incident begins soon after a release and the service has a known rollback path.\n\n## Investigation Steps\n\n1. Identify the latest production deployment for the affected service and dependencies.\n2. Compare deployment time with alert start time and customer-impact timeline.\n3. Confirm rollback availability, prior version, and database migration compatibility.\n4. Check whether a feature flag or configuration revert is safer than code rollback.\n5. Announce rollback intent in the incident channel with service, version, and expected impact.\n\n## Triage Decision Tree\n\n- Roll back when a release occurred within 60 minutes, metrics degraded after release, and rollback is available.\n- Prefer feature flag rollback when only a new code path is affected.\n- Do not roll back database migrations blindly; involve the owning team and DBA if schema changes are present.\n\n## Remediation\n\n1. Freeze further deployments for the affected service.\n2. Execute the approved rollback command or CI/CD rollback job.\n3. Watch rollout status until all pods are healthy.\n4. Validate customer-facing success metrics for at least 10 minutes.\n5. Open a follow-up ticket for the failed release before unfreezing deployments.\n\n## Verification\n\n- Error rate, latency, and saturation return to baseline.\n- No new alerts fire for the same service.\n- The previous version is confirmed in deployment inventory.\n\n## Escalation\n\nFor P1 rollback, notify service owner, incident commander, and platform release owner. For P2 rollback, notify service owner and release owner."
+}

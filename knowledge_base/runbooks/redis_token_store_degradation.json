@@ -1,0 +1,13 @@
+{
+  "doc_id": "redis_token_store_degradation",
+  "title": "Redis Token Store Degradation Runbook",
+  "doc_type": "runbook",
+  "services": "redis-token-store, auth-service",
+  "environments": "production, GIB-UKGC, NJ-DGE",
+  "severity_applicable": "P1,P2,P3",
+  "tags": "redis, session, token, auth, cache",
+  "last_updated": "2026-06-08",
+  "author": "PITER AiOps",
+  "version": "1.0",
+  "body": "# Redis Token Store Degradation Runbook\n\nUse this runbook when login succeeds intermittently, sessions disappear, token validation times out, or Redis latency/evictions rise.\n\n## Investigation Steps\n\n1. Check Redis `PING`, primary role, replica health, memory usage, and eviction count.\n2. Compare Redis latency with auth-service token validation errors.\n3. Check whether a recent auth-service deployment changed token write volume or TTL.\n4. Inspect network errors between auth-service pods and Redis.\n5. Confirm whether failover is active, partial, or stuck.\n\n## Triage Decision Tree\n\n- If Redis memory is above 90% and evictions are increasing, reduce token write pressure and scale memory.\n- If primary is unavailable, follow the managed Redis failover process.\n- If only auth-service sees errors, inspect client pool size and connection reuse.\n\n## Remediation\n\n1. Disable noisy token refresh paths or reduce refresh frequency if introduced by deployment.\n2. Scale Redis memory or shard capacity if safe and pre-approved.\n3. Restart auth-service clients only after confirming Redis itself is healthy.\n4. Avoid `FLUSHDB` in production unless the incident commander and Identity owner approve.\n\n## Verification\n\n- Redis latency returns to normal.\n- Evictions stop increasing.\n- Login success and token validation rates recover.\n\n## Escalation\n\nEscalate to Identity and Access for auth impact and Data Platform if Redis failover or capacity changes are required."
+}

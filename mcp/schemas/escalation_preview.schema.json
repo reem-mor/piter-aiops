@@ -1,0 +1,18 @@
+{
+  "name": "escalation_preview",
+  "description": "Read-only escalation policy preview (masked recipient). Never sends notifications.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "service": {
+        "type": "string"
+      },
+      "severity": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "service"
+    ]
+  }
+}

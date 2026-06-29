@@ -1,0 +1,13 @@
+{
+  "doc_id": "api_gateway_5xx",
+  "title": "API Gateway 5xx Troubleshooting Runbook",
+  "doc_type": "runbook",
+  "services": "api-gateway, auth-service, payment-service",
+  "environments": "production, GIB-UKGC, NJ-DGE",
+  "severity_applicable": "P1,P2,P3",
+  "tags": "api-gateway, 5xx, ingress, routing, timeout",
+  "last_updated": "2026-06-08",
+  "author": "PITER AiOps",
+  "version": "1.0",
+  "body": "# API Gateway 5xx Troubleshooting Runbook\n\nUse this runbook when API Gateway returns 5xx, 502, 503, or 504 errors for production traffic.\n\n## Investigation Steps\n\n1. Identify failing route, stage, integration target, and market.\n2. Compare API Gateway 5xx with backend service 5xx, latency, and health checks.\n3. Check recent deployments to API Gateway routing, auth-service, and upstream services.\n4. Inspect integration timeout, throttling, WAF blocks, and certificate errors.\n5. Validate whether public synthetic checks fail from multiple regions.\n\n## Triage Decision Tree\n\n- If backend errors mirror gateway errors, follow the backend service runbook.\n- If backend is healthy but gateway fails, inspect route configuration and integration timeout.\n- If only authenticated routes fail, check auth-service and token validation.\n\n## Remediation\n\n1. Roll back recent gateway route or stage configuration changes.\n2. Shift traffic away from a failing integration target if supported.\n3. Increase backend capacity only after confirming saturation is the cause.\n4. Avoid deleting stages or custom domain mappings during an incident.\n\n## Verification\n\n- Gateway 5xx drops below 1%.\n- p99 latency returns to normal.\n- Synthetic checks pass for authenticated and anonymous routes.\n\n## Escalation\n\nEscalate to Edge Platform for gateway configuration or WAF issues, and to the backend owner when integration errors mirror service errors."
+}

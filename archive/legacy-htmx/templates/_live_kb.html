@@ -1,0 +1,58 @@
+<section id="live-kb" class="section">
+  <div class="section-inner">
+    <p class="section-kicker" style="color:var(--tools)">
+      <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m12 3-1.9 5.8H4.5L10 12.8 8.1 19 12 15.5 15.9 19 14 12.8l5.5-4-5.6-.2L12 3z"/></svg>
+      Live demo
+    </p>
+    <h2 class="section-title">Try the incident Knowledge Base in real time</h2>
+    <p class="section-lead">
+      Ask an incident question against your indexed runbooks in Bedrock KB {{ kb_id }}.
+      Every answer includes citations with readable source names — works with any corpus you sync from S3.
+    </p>
+
+    <div class="glass ask-card neon-ring-rag">
+      <form id="ask-form"
+            hx-post="{{ url_for('main.ask') }}"
+            hx-target="#answer"
+            hx-swap="innerHTML"
+            hx-indicator="#spinner"
+            hx-disabled-elt="#submit-btn">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <label for="question" class="visually-hidden">Your incident question</label>
+        <div class="search-row">
+          <input id="question"
+                 name="question"
+                 type="text"
+                 autocomplete="off"
+                 maxlength="{{ max_len }}"
+                 placeholder="e.g. How do I triage an authentication service incident?"
+                 aria-label="Ask an incident question"
+                 required>
+          <button id="submit-btn" type="submit" class="btn-primary">
+            <span class="btn-text">Ask</span>
+            <span id="spinner" class="spinner htmx-indicator" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div id="char-count" class="char-count">0/{{ max_len }}</div>
+      </form>
+
+      <div class="examples">
+        <span class="examples-label">Try:</span>
+        {% for item in example_groups %}
+          <button type="button"
+                  class="chip"
+                  onclick="document.getElementById('question').value=this.dataset.q; document.getElementById('char-count').textContent=this.dataset.q.length+'/{{ max_len }}'; htmx.trigger('#ask-form','submit');"
+                  data-q="{{ item.question }}"
+                  title="{{ item.label }}">{{ item.question }}</button>
+        {% endfor %}
+      </div>
+
+      <div class="edge-note">
+        Edge cases handled: empty/short questions, stopwords-only input, off-topic refusals,
+        Bedrock throttling, and missing citations (shown as “Not in knowledge base”).
+      </div>
+    </div>
+
+    <div id="answer" class="answer-region" aria-live="polite"></div>
+  </div>
+</section>

@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Ruff lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install ruff
+      - run: ruff check .
+
+  test:
+    name: Pytest
+    runs-on: ubuntu-latest
+    # Dummy values: tests exercise Config.from_env() but never make live AWS calls.
+    env:
+      PITER_AWS_REGION: us-east-1
+      AWS_REGION: us-east-1
+      PITER_FLASK_SECRET_KEY: test-secret
+      FLASK_SECRET_KEY: test-secret
+      PITER_BEDROCK_KB_ID: test-kb
+      PITER_BEDROCK_AGENT_ID: test-agent
+      PITER_BEDROCK_AGENT_ALIAS_ID: test-alias
+      PITER_BEDROCK_DATA_SOURCE_ID: test-ds
+      PITER_BEDROCK_MODEL_ARN: "arn:aws:bedrock:us-east-1::foundation-model/amazon.nova-lite-v1:0"
+      BEDROCK_KB_ID: test-kb
+      BEDROCK_AGENT_ID: test-agent
+      BEDROCK_AGENT_ALIAS_ID: test-alias
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+      - name: Run pytest
+        run: python -m pytest -q

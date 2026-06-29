@@ -1,0 +1,48 @@
+<section id="document-upload" class="section">
+  <div class="section-inner">
+    <p class="section-kicker" style="color:var(--ingest)">Corpus ingestion</p>
+    <h2 class="section-title">Upload runbook documents</h2>
+    <p class="section-lead">
+      Add MD, TXT, CSV, DOCX, or PDF files to
+      <code>s3://{{ s3_bucket or '…' }}/{{ s3_prefix }}/</code>.
+      Optionally trigger a Bedrock Knowledge Base sync so new content is searchable after ingestion completes.
+    </p>
+
+    <div class="glass ask-card upload-card">
+      <form id="upload-form"
+            hx-post="{{ url_for('main.upload_document') }}"
+            hx-target="#upload-result"
+            hx-swap="innerHTML"
+            hx-encoding="multipart/form-data"
+            hx-indicator="#upload-spinner">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="upload-row">
+          <label for="document" class="upload-label">Choose file</label>
+          <input id="document"
+                 name="document"
+                 type="file"
+                 accept=".md,.txt,.csv,.docx,.pdf"
+                 required>
+        </div>
+        <label class="upload-sync">
+          <input type="checkbox" name="sync_kb" value="on" {% if sync_kb_default %}checked{% endif %}>
+          Sync to Knowledge Base after upload (requires Bedrock data source)
+        </label>
+        <div class="upload-actions">
+          <button id="upload-submit" type="submit" class="btn-primary">
+            <span class="btn-text">Upload document</span>
+            <span id="upload-spinner" class="spinner htmx-indicator" aria-hidden="true"></span>
+          </button>
+          <span class="upload-hint">Max {{ max_upload_mb }} MB · {{ allowed_types }}</span>
+        </div>
+      </form>
+
+      <div class="edge-note">
+        Upload validation: missing file, empty file, unsupported type, oversize payload.
+        S3 / IAM errors and KB sync failures surface as actionable messages below.
+      </div>
+    </div>
+
+    <div id="upload-result" class="upload-result-region" aria-live="polite"></div>
+  </div>
+</section>

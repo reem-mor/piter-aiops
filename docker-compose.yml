@@ -1,0 +1,36 @@
+# Local development convenience only.
+# On EC2 we run the container directly via `docker run` from user-data.
+#
+# Credential guide: docs/aws_credentials.md
+#   - Bedrock bearer: AWS_BEARER_TOKEN_BEDROCK (host env or .env)
+#   - IAM profile: host ~/.aws/credentials (mounted read-only below)
+#   - Bedrock IDs + Flask secret: project .env (PITER_* via env_file)
+#
+# Runs OUT OF THE BOX in local (offline) mode — no AWS or .env required:
+#   docker compose up --build   ->  http://localhost:8080/console
+# Live Bedrock: create .env from .env.example and run with
+# PITER_DOCKER_USE_BEDROCK=true when you intentionally want Docker to use AWS.
+services:
+  web:
+    build: .
+    image: piter-aiops:dev
+    container_name: piter-aiops
+    ports:
+      - "8080:8080"
+    environment:
+      # SPA is the default console; ignore legacy FORCE_LEGACY_UI in developer .env.
+      - FORCE_LEGACY_UI=false
+      # Keep Docker local-first even if a developer .env contains live AWS IDs.
+      # Opt in with PITER_DOCKER_USE_BEDROCK=true for live Bedrock Docker tests.
+      - PITER_USE_BEDROCK=${PITER_DOCKER_USE_BEDROCK:-false}
+      - USE_BEDROCK=${PITER_DOCKER_USE_BEDROCK:-false}
+      - AWS_PROFILE=${AWS_PROFILE:-}
+      - AWS_BEARER_TOKEN_BEDROCK=${AWS_BEARER_TOKEN_BEDROCK:-}
+    # .env is OPTIONAL — only needed for Bedrock mode (requires Compose v2.24+).
+    env_file:
+      - path: .env
+        required: false
+    # Locally we forward host AWS creds so boto3 can call Bedrock (Bedrock mode only).
+    volumes:
+      - ~/.aws:/home/app/.aws:ro
+    restart: unless-stopped

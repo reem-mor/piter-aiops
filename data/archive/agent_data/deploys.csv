@@ -1,0 +1,8 @@
+deploy_id,service,environment,version,deployed_at,deployed_by,change_summary
+DEP-2026-0610-01,postgres,NJ-DGE,14.2.1-pg,2026-06-10T07:45:00Z,platform-team,index maintenance window
+DEP-2026-0609-02,settlement-svc,NJ-DGE,2.4.8,2026-06-09T22:10:00Z,payments-team,connection pool max raised to 80
+DEP-2026-0608-03,checkout-api,NJ-DGE,5.1.0,2026-06-08T18:30:00Z,checkout-team,feature flag enable new pricing
+DEP-2026-0607-04,auth-api,NJ-DGE,3.2.1,2026-06-07T11:00:00Z,identity-team,OIDC client timeout tweak
+DEP-2026-0605-05,postgres,GIB,14.2.0-pg,2026-06-05T09:15:00Z,platform-team,minor patch
+DEP-2026-0603-06,api-gateway,NJ-DGE,1.9.2,2026-06-03T16:40:00Z,edge-team,WAF rule update
+DEP-2026-0610-07,bet-service,GIB-UKGC,v3.4.0,2026-06-10T09:45:00Z,jenkins-prod,bet-service rollout v3.4.0 to GIB-UKGC

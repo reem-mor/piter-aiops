@@ -1,0 +1,43 @@
+[
+  {
+    "id": 1,
+    "question": "What should I check when users cannot log in after the latest deployment?",
+    "expect_grounded": true,
+    "expected_source_contains": ["auth_service_login_failure", "deployment_rollback"],
+    "answer_keywords": ["deployment", "auth-service", "Redis", "rollback"]
+  },
+  {
+    "id": 2,
+    "question": "Analyze this alert: high error rate on auth-service in production after deployment.",
+    "expect_grounded": true,
+    "expected_source_contains": ["auth_service_login_failure", "piter_workflow"],
+    "answer_keywords": ["Priority", "Investigation", "Triage", "Escalation", "Resolution"]
+  },
+  {
+    "id": 3,
+    "question": "Who should I escalate this incident to?",
+    "expect_grounded": true,
+    "expected_source_contains": ["escalation_policies", "auth_service"],
+    "answer_keywords": ["primary", "on-call", "safe preview"]
+  },
+  {
+    "id": 4,
+    "question": "Are there similar incidents from the past?",
+    "expect_grounded": true,
+    "expected_source_contains": ["historical_auth_incidents", "similar_incidents_examples"],
+    "answer_keywords": ["historical", "auth-service", "Redis"]
+  },
+  {
+    "id": 5,
+    "question": "What is the business impact of auth-service login failures in GIB-UKGC production?",
+    "expect_grounded": true,
+    "expected_source_contains": ["business_impact", "auth_service"],
+    "answer_keywords": ["tier-0", "login", "revenue"]
+  },
+  {
+    "id": 6,
+    "question": "x",
+    "expect_validation_error": true,
+    "expected_reason": "short_question"
+  }
+]

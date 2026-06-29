@@ -1,0 +1,26 @@
+{
+  "name": "similar_incidents",
+  "description": "Find historically similar incidents with root cause, resolution and MTTR.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "service": {
+        "type": "string"
+      },
+      "symptom": {
+        "type": "string"
+      },
+      "environment": {
+        "type": "string"
+      },
+      "limit": {
+        "type": "integer",
+        "default": 5
+      }
+    },
+    "required": [
+      "service",
+      "symptom"
+    ]
+  }
+}

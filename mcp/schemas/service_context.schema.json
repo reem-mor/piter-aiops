@@ -1,0 +1,25 @@
+{
+  "name": "service_context",
+  "description": "Service owner, on-call role, escalation chain and (optional) business-impact scoring.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "service": {
+        "type": "string"
+      },
+      "severity": {
+        "type": "string"
+      },
+      "environment": {
+        "type": "string"
+      },
+      "duration_minutes": {
+        "type": "integer",
+        "default": 60
+      }
+    },
+    "required": [
+      "service"
+    ]
+  }
+}
