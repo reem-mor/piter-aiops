@@ -1,12 +1,12 @@
-# Build PITER AiOps locally and print (or run) EC2 deploy commands.
+﻿# Build PITER AiOps locally and print (or run) EC2 deploy commands.
 # Does not run from CI. See frontend/EC2_DEPLOY.md and docs/LOCAL_DEV.md.
 param(
-    [string]$SshHost = "ec2-3-235-22-143.compute-1.amazonaws.com",
+    [string]$SshHost = "",
     [string]$SshUser = "ec2-user",
     [string]$SshKey = "",
     [string]$RemotePath = "/opt/piter-aiops",
     [string]$ImageTag = "piter-aiops:latest",
-    [string]$PublicBaseUrl = "http://ec2-3-235-22-143.compute-1.amazonaws.com:8080",
+    [string]$PublicBaseUrl = "http://localhost:8080",
     [switch]$SkipNpmBuild,
     [switch]$SkipDockerBuild,
     [switch]$Execute,
@@ -14,6 +14,11 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+if (-not $SshHost) { $SshHost = $env:PITER_DEMO_HOST }
+if (-not $SshHost) {
+    Write-Error "Set -SshHost or env:PITER_DEMO_HOST (e.g. your-ec2-host.compute.amazonaws.com)"
+}
+
 $Root = Split-Path -Parent $PSScriptRoot
 $Frontend = Join-Path $Root "frontend"
 $Python = Join-Path $Root ".venv\Scripts\python.exe"

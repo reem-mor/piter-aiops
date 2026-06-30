@@ -1,11 +1,12 @@
+﻿# Example only — edit recipients before running against your AWS account.
 # Push live escalation recipients + allowlist to SSM (SecureString). Idempotent.
 $ErrorActionPreference = "Stop"
 
 $recipients = @(
-    "reem.mor3@gmail.com",
-    "kalex7878@gmail.com",
-    "sagy.galor@fursa.org.il",
-    "sagy.galor@portlandtrust.org.il"
+    "your-email@example.com",
+    "admin1@example.com",
+    "admin2@example.com",
+    "admin3@example.com"
 ) -join ","
 
 $allowlist = $recipients
@@ -15,7 +16,7 @@ $params = @{
     "/piter-aiops/notification/enable_live_dispatch" = "true"
     "/piter-aiops/notification/escalation_email" = $recipients
     "/piter-aiops/notification/allowlist" = $allowlist
-    "/piter-aiops/notification/demo_email" = "reem.mor3@gmail.com"
+    "/piter-aiops/notification/demo_email" = "your-email@example.com"
 }
 
 foreach ($entry in $params.GetEnumerator()) {
@@ -24,9 +25,9 @@ foreach ($entry in $params.GetEnumerator()) {
 }
 
 $verify = @(
-    "kalex7878@gmail.com",
-    "sagy.galor@fursa.org.il",
-    "sagy.galor@portlandtrust.org.il"
+    "admin1@example.com",
+    "admin2@example.com",
+    "admin3@example.com"
 )
 foreach ($email in $verify) {
     aws ses verify-email-identity --email-address $email 2>$null | Out-Null

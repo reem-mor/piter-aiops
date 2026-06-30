@@ -1,13 +1,13 @@
-{
+﻿{
   "Version": "2012-10-17",
   "Statement": [
     {
       "Sid": "S3ListBucketStatement",
       "Effect": "Allow",
       "Action": ["s3:ListBucket"],
-      "Resource": ["arn:aws:s3:::reem-amdocs-ai-artifacts-3331"],
+      "Resource": ["arn:aws:s3:::your-artifacts-bucket"],
       "Condition": {
-        "StringEquals": { "aws:ResourceAccount": ["329597159579"] }
+        "StringEquals": { "aws:ResourceAccount": ["${AWS_ACCOUNT_ID}"] }
       }
     },
     {
@@ -15,11 +15,11 @@
       "Effect": "Allow",
       "Action": ["s3:GetObject"],
       "Resource": [
-        "arn:aws:s3:::reem-amdocs-ai-artifacts-3331/projects/piter-aiops/knowledge_base/*",
-        "arn:aws:s3:::reem-amdocs-ai-artifacts-3331/projects/piter-aiops/agent/*"
+        "arn:aws:s3:::your-artifacts-bucket/projects/piter-aiops/knowledge_base/*",
+        "arn:aws:s3:::your-artifacts-bucket/projects/piter-aiops/agent/*"
       ],
       "Condition": {
-        "StringEquals": { "aws:ResourceAccount": ["329597159579"] }
+        "StringEquals": { "aws:ResourceAccount": ["${AWS_ACCOUNT_ID}"] }
       }
     }
   ]

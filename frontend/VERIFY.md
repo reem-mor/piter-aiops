@@ -1,4 +1,4 @@
-# PITER AiOps SPA — Verification (F2-R)
+﻿# PITER AiOps SPA — Verification (F2-R)
 
 Manual click-test and automated gates for the enterprise layout + demo choreography.
 
@@ -119,10 +119,10 @@ curl http://localhost:8080/api/health?deep=1
 ```powershell
 .\scripts\deploy-ec2-ssm.ps1 -Verify
 # or
-python scripts/verify_live_demo.py --base-url http://ec2-3-235-22-143.compute-1.amazonaws.com:8080
+python scripts/verify_live_demo.py --base-url http://localhost:8080
 ```
 
-Browser: `http://ec2-3-235-22-143.compute-1.amazonaws.com:8080/` — Ctrl+Shift+R, re-run click-test above.
+Browser: `http://localhost:8080/` — Ctrl+Shift+R, re-run click-test above.
 
 Confirm SPA bundle: page source `index-*.js` should match `app/static/spa/index.html` from your local `npm run build`.
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Pre-presentation AWS readiness checklist for PITER Bedrock agent demo.
 
 Checks functional wiring, security hardening, and cost guards described in
@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from dataclasses import dataclass
 from enum import Enum
@@ -28,11 +29,11 @@ from botocore.exceptions import ClientError  # noqa: E402
 
 from app.config import Config, ConfigError  # noqa: E402
 
-# Deploy defaults (override via CLI or .env through Config)
-DEFAULT_ACCOUNT_ID = "329597159579"
+# Deploy defaults (override via CLI, .env, or AWS_ACCOUNT_ID env var)
+DEFAULT_ACCOUNT_ID = os.environ.get("AWS_ACCOUNT_ID", "")
 DEFAULT_S3_BUCKETS = (
-    "reem-amdocs-ai-artifacts-3331",
-    "reem-amdocs-ai-logs-331",
+    "your-artifacts-bucket",
+    "your-logs-bucket",
 )
 DEFAULT_LAMBDAS = (
     "piter-recent-deployments",
@@ -44,7 +45,7 @@ DEFAULT_MODELS = (
     "amazon.nova-lite-v1:0",
     "amazon.titan-embed-text-v2:0",
 )
-DEFAULT_IAM_USER = "admin-reem"
+DEFAULT_IAM_USER = "your-aws-profile"
 DEFAULT_EC2_NAME = "piter-aiops-demo"
 LAMBDA_LOG_PREFIX = "/aws/lambda/"
 MIN_LOG_RETENTION_DAYS = 7

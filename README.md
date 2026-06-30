@@ -1,8 +1,5 @@
-﻿> **Portfolio flagship** â€” agentic incident response on AWS Bedrock. Course archive: [amdocs-ai-course](https://github.com/reem-mor/amdocs-ai-course).
+﻿> **Portfolio flagship** — agentic incident response on AWS Bedrock. Course archive: [amdocs-ai-course](https://github.com/reem-mor/amdocs-ai-course).
 # PITER AiOps
-
-> **Extraction-ready:** Canonical home will be [reem-mor/piter-aiops](https://github.com/reem-mor/piter-aiops) *(not created yet)*.
-> See [`EXTRACTION.md`](EXTRACTION.md) and [`docs/extraction/`](../../docs/extraction/).
 
 **AI-powered incident response for NOC, DevOps, and SRE teams**
 
@@ -13,22 +10,21 @@
 ![React 18](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)
 ![Amazon Bedrock](https://img.shields.io/badge/Amazon_Bedrock-Agent_%2B_KB-FF9900?logo=amazonwebservices&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white)
-[![CI](https://img.shields.io/badge/CI-external_repo_pending-lightgrey)](#quick-start)
+[![CI](https://github.com/reem-mor/piter-aiops/actions/workflows/ci.yml/badge.svg)](https://github.com/reem-mor/piter-aiops/actions/workflows/ci.yml)
 ![pytest](https://img.shields.io/badge/pytest-279_passed-brightgreen?logo=pytest&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 ![PITER AiOps — NOC dashboard](screenshots/final/01_dashboard.png)
 
-### Submission links
+### Quick links
 
-| Resource               | Link                                                                                                                                          |
-| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Live demo (EC2)**    | **[http://ec2-3-235-22-143.compute-1.amazonaws.com:8080/](http://ec2-3-235-22-143.compute-1.amazonaws.com:8080/)** *(verified `/health` 200)* |
-| **Lovable UI (static)** | **[https://ops-insight-nexus.lovable.app](https://ops-insight-nexus.lovable.app)** *(frontend preview; Bedrock flows use EC2)*              |
-| **Presentation**       | [`presentation/presentation_v1.pptx`](presentation/presentation_v1.pptx)                                                                        |
-| **Demo script**        | [`docs/demo_script.md`](docs/demo_script.md)                                                                                                  |
-| **Deploy guide**       | [`docs/ec2_deployment.md`](docs/ec2_deployment.md)                                                                                            |
-| **Sync audit (Jun 10)** | [`docs/PHASE1_SYNC_AUDIT.md`](docs/PHASE1_SYNC_AUDIT.md)                                                                                     |
+| Resource | Link |
+| -------- | ---- |
+| **Local demo** | `docker compose up --build` → [http://localhost:8080](http://localhost:8080) |
+| **EC2 deploy** | [`docs/ec2_deployment.md`](docs/ec2_deployment.md) — set `PITER_DEMO_HOST` / `PITER_EC2_INSTANCE_ID` in your env |
+| **Lovable UI (static)** | [ops-insight-nexus.lovable.app](https://ops-insight-nexus.lovable.app) *(UI preview; Bedrock flows need backend)* |
+| **Presentation** | [`presentation/presentation_v1.pptx`](presentation/presentation_v1.pptx) |
+| **Demo script** | [`docs/demo_script.md`](docs/demo_script.md) |
 
 > **Safety:** Escalation is preview-only by default. No auto-SMS or email unless `PITER_ENABLE_LIVE_DISPATCH=true` and notification channels are configured.
 
@@ -81,8 +77,8 @@ Mid-course requirements from the **PITER AiOps — Mid-Course Project Instructio
 | Requirement | Status | Implementation | Screenshot |
 | ----------- | ------ | -------------- | ---------- |
 | Flask web application | Met | [`app/routes.py`](app/routes.py), [`wsgi.py`](wsgi.py) — `/api/health`, `/api/chat`, `/api/triage`, `/api/history`, `/api/metrics/*` | — |
-| RAG (document Q&A) | Met | Bedrock KB `RBTJM6NIG9` + [`knowledge_base/`](knowledge_base/); fallback [`app/services/local_rag.py`](app/services/local_rag.py) | [`06_rag_citations.png`](screenshots/final/06_rag_citations.png) |
-| Bedrock KB ↔ Agent | Met | AWS: KB `RBTJM6NIG9` ENABLED on agent `HH4YGSLZUE` (alias `O2EM03R4R3`); [`infra/bedrock_agent_instructions.txt`](infra/bedrock_agent_instructions.txt) | [`11_knowledge_base.png`](screenshots/final/11_knowledge_base.png) |
+| RAG (document Q&A) | Met | Bedrock KB `${PITER_BEDROCK_KB_ID}` + [`knowledge_base/`](knowledge_base/); fallback [`app/services/local_rag.py`](app/services/local_rag.py) | [`06_rag_citations.png`](screenshots/final/06_rag_citations.png) |
+| Bedrock KB ↔ Agent | Met | AWS: KB `${PITER_BEDROCK_KB_ID}` ENABLED on agent `${PITER_BEDROCK_AGENT_ID}` (alias `${PITER_BEDROCK_AGENT_ALIAS_ID}`); [`infra/bedrock_agent_instructions.txt`](infra/bedrock_agent_instructions.txt) | [`11_knowledge_base.png`](screenshots/final/11_knowledge_base.png) |
 | boto3 `invoke_agent` | Met | [`app/bedrock_agent_client.py`](app/bedrock_agent_client.py) L137 — `bedrock-agent-runtime.invoke_agent`; wrapper [`app/services/bedrock_agent_service.py`](app/services/bedrock_agent_service.py) | [`05_investigation_detail_triage.png`](screenshots/final/05_investigation_detail_triage.png) |
 | Session memory (follow-up) | Met | [`app/services/session_memory.py`](app/services/session_memory.py) — `append_followup()`; triage context in [`app/routes.py`](app/routes.py) | [`08_memory_followup_context.png`](screenshots/final/08_memory_followup_context.png) |
 | Chat history | Met | [`app/services/chat_history.py`](app/services/chat_history.py) — `append_turn()`; `GET/DELETE /api/history` | [`08_memory_followup_context.png`](screenshots/final/08_memory_followup_context.png) |
@@ -91,7 +87,7 @@ Mid-course requirements from the **PITER AiOps — Mid-Course Project Instructio
 | Escalation preview (safe) | Met | [`action_groups/piter-escalation/lambda_function.py`](action_groups/piter-escalation/lambda_function.py); [`app/services/escalation_service.py`](app/services/escalation_service.py) | [`09_escalation_preview.png`](screenshots/final/09_escalation_preview.png) |
 | Demo correlation chain | Met | [`app/services/structured_analysis.py`](app/services/structured_analysis.py); wallet-service deploy → replication lag → similar incident | [`demo-wallet-v4-12-3-correlation-chain.png`](screenshots/final/demo-wallet-v4-12-3-correlation-chain.png) |
 | Docker | Met | [`Dockerfile`](Dockerfile), [`docker-compose.yml`](docker-compose.yml) | [`15_docker_running.png`](screenshots/final/15_docker_running.png) |
-| EC2 deployment | Met | Instance `i-0c53b195878f0ea5f`; [`docs/ec2_deployment.md`](docs/ec2_deployment.md) | [`14b_live_demo_checks.png`](screenshots/final/14b_live_demo_checks.png) |
+| EC2 deployment | Met | Instance `${PITER_EC2_INSTANCE_ID}`; [`docs/ec2_deployment.md`](docs/ec2_deployment.md) | [`14b_live_demo_checks.png`](screenshots/final/14b_live_demo_checks.png) |
 | GitHub + README | Met | This file — install, run, architecture, requirements | — |
 | Presentation | Included | [`presentation/presentation_v1.pptx`](presentation/presentation_v1.pptx) | — |
 
@@ -141,12 +137,12 @@ python scripts/kb_smoke_test.py
 ```powershell
 py -3.12 scripts/verify_credentials.py
 py -3.12 scripts/agent_smoke_test.py
-py -3.12 scripts/verify_live_demo.py --base-url http://ec2-3-235-22-143.compute-1.amazonaws.com:8080
+py -3.12 scripts/verify_live_demo.py --base-url http://localhost:8080
 ```
 
 Daily dev loop: [`docs/LOCAL_DEV.md`](docs/LOCAL_DEV.md) · Presenter flow: [`docs/demo_script.md`](docs/demo_script.md)
 
-> Terminate EC2 instance `i-0c53b195878f0ea5f` after presentations to avoid ongoing cost. See [`screenshots/deployment_validation.md`](screenshots/deployment_validation.md).
+> Terminate EC2 instance `${PITER_EC2_INSTANCE_ID}` after presentations to avoid ongoing cost. See [`screenshots/deployment_validation.md`](screenshots/deployment_validation.md).
 
 ---
 
@@ -310,9 +306,9 @@ System prompt: [`infra/bedrock_agent_instructions.txt`](infra/bedrock_agent_inst
 | Topic             | Detail                                                                             |
 | ----------------- | ---------------------------------------------------------------------------------- |
 | Corpus            | [`knowledge_base/`](knowledge_base/) — runbooks, incidents, services, piter guides |
-| S3 prefix         | `s3://reem-amdocs-ai-artifacts-3331/projects/piter-aiops/knowledge_base/`          |
-| Knowledge base ID | `RBTJM6NIG9`                                                                       |
-| Agent ID          | `HH4YGSLZUE` (alias `O2EM03R4R3`)                                                  |
+| S3 prefix         | `s3://your-artifacts-bucket/projects/piter-aiops/knowledge_base/`          |
+| Knowledge base ID | `${PITER_BEDROCK_KB_ID}`                                                                       |
+| Agent ID          | `${PITER_BEDROCK_AGENT_ID}` (alias `${PITER_BEDROCK_AGENT_ALIAS_ID}`)                                                  |
 
 
 Local fallback: When `PITER_USE_BEDROCK=false` or Bedrock fails with fallback enabled, Flask answers from TF-IDF via [`app/services/local_rag.py`](app/services/local_rag.py).
@@ -474,7 +470,7 @@ Reuses session attributes when `triage_complete=true`. Does not repeat full tria
 
 ## Screenshots
 
-Curated captures from [`screenshots/final/`](screenshots/final/) — aligned with mid-course demo requirements (RAG, tools, live action). **Jun 10, 2026 refresh:** Playwright capture at 1920×1080 against the live EC2 stack (`PITER_BASE_URL=http://ec2-3-235-22-143.compute-1.amazonaws.com:8080`) via [`frontend/e2e/submission-screenshots.spec.ts`](frontend/e2e/submission-screenshots.spec.ts).
+Curated captures from [`screenshots/final/`](screenshots/final/) — aligned with mid-course demo requirements (RAG, tools, live action). **Jun 10, 2026 refresh:** Playwright capture at 1920×1080 against the live EC2 stack (`PITER_BASE_URL=http://localhost:8080`) via [`frontend/e2e/submission-screenshots.spec.ts`](frontend/e2e/submission-screenshots.spec.ts).
 
 **Analyze alert** — Incident Analyzer input + structured PITER output
 
@@ -539,7 +535,7 @@ Curated captures from [`screenshots/final/`](screenshots/final/) — aligned wit
 
 When Bedrock fails and fallback is disabled, the UI shows failure explicitly — never fake a grounded answer.
 
-**Tokenless escalation + structured analysis (Jun 2026):** Live email dispatch no longer accepts a confirmation token from the browser — `POST /api/escalation/notify` injects `PITER_NOTIFICATION_CONFIRMATION_TOKEN` server-side while the UI keeps preview + explicit confirm only (`EscalationModal.tsx`). Analyze Alert responses now include a `structured_analysis` contract (correlation chain, evidence, recommended actions, escalation suggestion) with markdown stripped before render; see `app/services/structured_analysis.py`, `PiterAnalysisPanel.tsx`, and `screenshots/final/16_structured_analysis_panel.png`. Live SES proof on EC2: message ID `0100019eb06b31ee-7bfe623d-98fe-4d94-98e9-451931918d4a-000000` to `reem.mor3@gmail.com` (sandbox).
+**Tokenless escalation + structured analysis (Jun 2026):** Live email dispatch no longer accepts a confirmation token from the browser — `POST /api/escalation/notify` injects `PITER_NOTIFICATION_CONFIRMATION_TOKEN` server-side while the UI keeps preview + explicit confirm only (`EscalationModal.tsx`). Analyze Alert responses now include a `structured_analysis` contract (correlation chain, evidence, recommended actions, escalation suggestion) with markdown stripped before render; see `app/services/structured_analysis.py`, `PiterAnalysisPanel.tsx`, and `screenshots/final/16_structured_analysis_panel.png`.
 
 ---
 

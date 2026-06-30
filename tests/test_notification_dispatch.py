@@ -1,4 +1,4 @@
-"""Tests for SNS/SES notification dispatch."""
+﻿"""Tests for SNS/SES notification dispatch."""
 from __future__ import annotations
 
 import pytest
@@ -151,7 +151,7 @@ def test_dispatch_sms_stays_direct_when_topic_subscriber_confirmed(monkeypatch):
     monkeypatch.delenv("PITER_SNS_SMS_USE_TOPIC", raising=False)
     monkeypatch.setenv(
         "PITER_SNS_TOPIC_ARN",
-        "arn:aws:sns:us-east-1:329597159579:piter-aiops-escalation",
+        "arn:aws:sns:us-east-1:${AWS_ACCOUNT_ID}:piter-aiops-escalation",
     )
     calls: list[str] = []
 
@@ -168,7 +168,7 @@ def test_dispatch_sms_stays_direct_when_topic_subscriber_confirmed(monkeypatch):
                                 "Protocol": "sms",
                                 "Endpoint": "+15551234567",
                                 "SubscriptionArn": (
-                                    "arn:aws:sns:us-east-1:329597159579:piter-aiops-escalation:abc"
+                                    "arn:aws:sns:us-east-1:${AWS_ACCOUNT_ID}:piter-aiops-escalation:abc"
                                 ),
                             }
                         ]
@@ -195,7 +195,7 @@ def test_topic_subscription_alone_is_not_delivery_ready(monkeypatch):
     monkeypatch.setenv("PITER_SMS_USE_VOICE_V2", "false")
     monkeypatch.setenv(
         "PITER_SNS_TOPIC_ARN",
-        "arn:aws:sns:us-east-1:329597159579:piter-aiops-escalation",
+        "arn:aws:sns:us-east-1:${AWS_ACCOUNT_ID}:piter-aiops-escalation",
     )
 
     class FakeSns:
@@ -214,7 +214,7 @@ def test_topic_subscription_alone_is_not_delivery_ready(monkeypatch):
                                 "Protocol": "sms",
                                 "Endpoint": "+15551234567",
                                 "SubscriptionArn": (
-                                    "arn:aws:sns:us-east-1:329597159579:piter-aiops-escalation:abc"
+                                    "arn:aws:sns:us-east-1:${AWS_ACCOUNT_ID}:piter-aiops-escalation:abc"
                                 ),
                             }
                         ]

@@ -1,7 +1,7 @@
-# Bedrock Agent Ops Smoke Test Results
+﻿# Bedrock Agent Ops Smoke Test Results
 
 - **Run at:** 2026-06-10 08:17:06 UTC
-- **Backend / ref:** `HH4YGSLZUE/O2EM03R4R3`
+- **Backend / ref:** `${PITER_BEDROCK_AGENT_ID}/${PITER_BEDROCK_AGENT_ALIAS_ID}`
 - **Score:** 3/3 PASS
 
 | ID | Status | Grounded | Citations | Latency ms |

@@ -1,4 +1,4 @@
-"""Route tests for POST /documents/upload."""
+﻿"""Route tests for POST /documents/upload."""
 from __future__ import annotations
 
 import io
@@ -32,9 +32,9 @@ def upload_service():
 def upload_app(app, upload_service):
     app.extensions["upload_service"] = upload_service
     app.config.update(
-        S3_BUCKET="reem-amdocs-ai-artifacts-3331",
+        S3_BUCKET="your-artifacts-bucket",
         S3_PREFIX="projects/piter-aiops/knowledge_base",
-        BEDROCK_DATA_SOURCE_ID="YICXAB6WOG",
+        BEDROCK_DATA_SOURCE_ID="${PITER_BEDROCK_DATA_SOURCE_ID}",
         MAX_UPLOAD_BYTES=1024,
     )
     return app

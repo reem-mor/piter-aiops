@@ -1,7 +1,7 @@
-#!/usr/bin/env bash
+﻿#!/usr/bin/env bash
 set -euo pipefail
 
-BUCKET="${BUCKET:-reem-amdocs-ai-artifacts-3331}"
+BUCKET="${BUCKET:-your-artifacts-bucket}"
 PREFIX="${PREFIX:-projects/piter-aiops/deploy}"
 ENV_FILE="/opt/piter-aiops/.env"
 

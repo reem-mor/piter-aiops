@@ -1,4 +1,4 @@
-# PITER AiOps — Readiness Report
+﻿# PITER AiOps — Readiness Report
 
 Mid-course review against **AI-Augmented Software Engineering** project guidelines and the PITER AiOps implementation plan.
 
@@ -12,7 +12,7 @@ Mid-course review against **AI-Augmented Software Engineering** project guidelin
 | Docker | Met | [`Dockerfile`](../Dockerfile), [`docker-compose.yml`](../docker-compose.yml) |
 | Pandas / CSV / JSON | Met | [`app/services/data_access.py`](../app/services/data_access.py), [`data/source/`](../data/source/) |
 | GitHub + README | Met | [`README.md`](../README.md) |
-| Live demo | **Ready** | EC2 `i-0c53b195878f0ea5f` — http://ec2-3-235-22-143.compute-1.amazonaws.com:8080/ |
+| Live demo | **Ready** | EC2 `${PITER_EC2_INSTANCE_ID}` — http://localhost:8080/ |
 | Presentation | Out of repo | Use [`docs/demo_script.md`](demo_script.md) |
 
 ## Problem Inventory (Resolved / Tracked)
@@ -22,7 +22,7 @@ Mid-course review against **AI-Augmented Software Engineering** project guidelin
 | P1 | High | String compare `priority > "P2"` in incident analysis | Fixed: rank-based `_raise_priority()` |
 | P2 | High | Legacy `iiq-*` names in agent instructions / deploy script | Fixed: `piter-*` naming in infra + `aws_deploy_fix.ps1` |
 | P3 | High | `.env.example` drift (unused vars) | Fixed: aligned with [`app/config.py`](../app/config.py) |
-| P4 | High | No running EC2 for teacher demo | **Resolved:** instance `i-0c53b195878f0ea5f`, validation in [`screenshots/deployment_validation.md`](../screenshots/deployment_validation.md) |
+| P4 | High | No running EC2 for teacher demo | **Resolved:** instance `${PITER_EC2_INSTANCE_ID}`, validation in [`screenshots/deployment_validation.md`](../screenshots/deployment_validation.md) |
 | P5 | Medium | `/api/chat` history ignored `session_id` | Fixed: `append_turn(session_id=...)` |
 | P6 | Medium | Frontend `business_impact` vs `business_explanation` | Fixed: normalization exposes both |
 | P7 | Medium | Bedrock errors looked like silent success | Fixed: `ok=false`, `error`, `fallback_used` on failures |
@@ -67,4 +67,4 @@ See [`docs/ec2_deployment.md`](ec2_deployment.md) for the full checklist and CLI
 ## Demo Entry Points
 
 - Local: `http://localhost:8080/` (Docker or `scripts/run-local.ps1`)
-- **EC2:** http://ec2-3-235-22-143.compute-1.amazonaws.com:8080/
+- **EC2:** http://localhost:8080/

@@ -1,7 +1,7 @@
-# RAG Parity Results (Bedrock Agent vs Local KB)
+﻿# RAG Parity Results (Bedrock Agent vs Local KB)
 
 - **Run at:** 2026-06-09 19:34:26 UTC
-- **Agent ref:** `HH4YGSLZUE/O2EM03R4R3`
+- **Agent ref:** `${PITER_BEDROCK_AGENT_ID}/${PITER_BEDROCK_AGENT_ALIAS_ID}`
 - **Score:** 1/6 semantic PASS
 
 Parity criteria: same `grounded` decision, `expected_source_contains` on both sides, `answer_keywords` on both sides. Answer text may differ.

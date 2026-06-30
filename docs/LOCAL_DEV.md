@@ -1,8 +1,8 @@
-# Local Development — PITER AiOps
+﻿# Local Development — PITER AiOps
 
 Develop on your Windows workstation with Cursor. Ship to EC2 only for live demos.
 
-**EC2 instance:** `i-0c53b195878f0ea5f` — http://ec2-3-235-22-143.compute-1.amazonaws.com:8080/
+**EC2 instance:** `${PITER_EC2_INSTANCE_ID}` — http://localhost:8080/
 
 ## Mental model
 
@@ -118,9 +118,9 @@ Or step by step:
 ```powershell
 docker build -t piter-aiops:latest .
 docker save piter-aiops:latest -o piter-aiops.tar
-aws s3 cp piter-aiops.tar s3://reem-amdocs-ai-artifacts-3331/projects/piter-aiops/deploy/piter-aiops.tar
-aws s3 cp scripts/ec2-deploy-from-s3.sh s3://reem-amdocs-ai-artifacts-3331/projects/piter-aiops/deploy/ec2-deploy-from-s3.sh
-aws ssm send-command --instance-ids i-0c53b195878f0ea5f `
+aws s3 cp piter-aiops.tar s3://your-artifacts-bucket/projects/piter-aiops/deploy/piter-aiops.tar
+aws s3 cp scripts/ec2-deploy-from-s3.sh s3://your-artifacts-bucket/projects/piter-aiops/deploy/ec2-deploy-from-s3.sh
+aws ssm send-command --instance-ids ${PITER_EC2_INSTANCE_ID} `
   --document-name AWS-RunShellScript `
   --parameters file://scripts/ssm-deploy-image.json
 ```
@@ -138,7 +138,7 @@ Or: `aws ssm send-command` with [`scripts/ssm-patch-notification-live.json`](../
 ### Post-deploy verify
 
 ```powershell
-python scripts/verify_live_demo.py --base-url http://ec2-3-235-22-143.compute-1.amazonaws.com:8080
+python scripts/verify_live_demo.py --base-url http://localhost:8080
 ```
 
 Browser: hard refresh (Ctrl+Shift+R), then [`frontend/VERIFY.md`](../frontend/VERIFY.md) click-test.
@@ -158,7 +158,7 @@ Configure once in `~/.ssh/config`:
 
 ```sshconfig
 Host piter-demo
-  HostName ec2-3-235-22-143.compute-1.amazonaws.com
+  HostName ${PITER_DEMO_HOST}
   User ec2-user
   IdentityFile C:/path/to/YOUR_KEY.pem
 ```

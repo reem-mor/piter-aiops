@@ -1,8 +1,8 @@
-# PITER Ops Enterprise Upgrade — Final Report (A–Q)
+﻿# PITER Ops Enterprise Upgrade — Final Report (A–Q)
 
 **Date:** 2026-06-10  
 **Branch:** `main` (local uncommitted)  
-**Live URL:** http://ec2-3-235-22-143.compute-1.amazonaws.com:8080/  
+**Live URL:** http://localhost:8080/  
 **UI marker:** `data-ui-version="demo-polish-v4"`
 
 ---
@@ -117,9 +117,9 @@ cd ..
 
 ```powershell
 aws sts get-caller-identity
-# Account 329597159579 — admin-reem (verified 2026-06-10)
+# Account ${AWS_ACCOUNT_ID} — your-aws-profile (verified 2026-06-10)
 
-curl http://ec2-3-235-22-143.compute-1.amazonaws.com:8080/api/health?deep=1
+curl http://localhost:8080/api/health?deep=1
 # bedrock: configured, tools_ok: ok, s3: configured
 ```
 
@@ -150,7 +150,7 @@ See `docs/bedrock_verification.md` for agent/KB CLI checks.
 | **M. UI version gate** | `demo-polish-v3` |
 | **N. Escalation** | Preview-only; human approval required |
 | **O. Upload honesty** | Local KB vs Bedrock sync labeled in UI |
-| **P. EC2 instance** | `i-0c53b195878f0ea5f` |
+| **P. EC2 instance** | `${PITER_EC2_INSTANCE_ID}` |
 | **Q. Deploy script** | `scripts/deploy-ec2-ssm.ps1 -Verify` |
 
 ---

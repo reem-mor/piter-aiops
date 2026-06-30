@@ -1,24 +1,24 @@
-{
+﻿{
   "Version": "2012-10-17",
   "Statement": [
     {
       "Sid": "AllowPublishToPiterEscalationTopicOnly",
       "Effect": "Allow",
       "Action": ["sns:Publish"],
-      "Resource": "arn:aws:sns:us-east-1:329597159579:piter-aiops-escalation"
+      "Resource": "arn:aws:sns:us-east-1:${AWS_ACCOUNT_ID}:piter-aiops-escalation"
     },
     {
       "Sid": "AllowSesSendFromVerifiedIdentitiesOnly",
       "Effect": "Allow",
       "Action": ["ses:SendEmail", "ses:SendRawEmail"],
       "Resource": [
-        "arn:aws:ses:us-east-1:329597159579:identity/fontex331@gmail.com",
-        "arn:aws:ses:us-east-1:329597159579:identity/reem.mor3@gmail.com",
-        "arn:aws:ses:us-east-1:329597159579:configuration-set/piter-aiops-escalations"
+        "arn:aws:ses:us-east-1:${AWS_ACCOUNT_ID}:identity/your-sender@example.com",
+        "arn:aws:ses:us-east-1:${AWS_ACCOUNT_ID}:identity/your-email@example.com",
+        "arn:aws:ses:us-east-1:${AWS_ACCOUNT_ID}:configuration-set/piter-aiops-escalations"
       ],
       "Condition": {
         "StringEquals": {
-          "ses:FromAddress": ["fontex331@gmail.com", "reem.mor3@gmail.com"]
+          "ses:FromAddress": ["your-sender@example.com", "your-email@example.com"]
         }
       }
     },

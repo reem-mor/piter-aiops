@@ -1,4 +1,4 @@
-# EC2 Deploy — Frontend Rebuild (manual steps)
+﻿# EC2 Deploy — Frontend Rebuild (manual steps)
 
 Document-only deploy plan. **Do not run SSH from CI.** Execute from your workstation when ready to ship after F4 passes.
 
@@ -33,13 +33,13 @@ Document-only deploy plan. **Do not run SSH from CI.** Execute from your worksta
 
 4. **Confirm target instance** (workstation):
    ```powershell
-   aws ec2 describe-instances --instance-ids i-0c53b195878f0ea5f `
+   aws ec2 describe-instances --instance-ids ${PITER_EC2_INSTANCE_ID} `
      --query "Reservations[].Instances[].[InstanceId,State.Name,PublicDnsName]" --output table
    ```
 
 5. **SSH to EC2** (replace key and host):
    ```bash
-   ssh -i ~/.ssh/YOUR_KEY.pem ec2-user@ec2-3-235-22-143.compute-1.amazonaws.com
+   ssh -i ~/.ssh/YOUR_KEY.pem ec2-user@${PITER_DEMO_HOST}
    ```
 
 6. **On EC2 — update code/image** (if not using tarball):
@@ -70,14 +70,14 @@ Document-only deploy plan. **Do not run SSH from CI.** Execute from your worksta
 
 10. **Public health check**:
     ```bash
-    curl -s http://ec2-3-235-22-143.compute-1.amazonaws.com:8080/api/health?deep=1
+    curl -s http://localhost:8080/api/health?deep=1
     ```
 
-11. **Browser smoke** — open `http://ec2-3-235-22-143.compute-1.amazonaws.com:8080/` and run the checklist in `frontend/VERIFY.md`.
+11. **Browser smoke** — open `http://localhost:8080/` and run the checklist in `frontend/VERIFY.md`.
 
 12. **Optional live demo script** (workstation):
     ```powershell
-    python scripts/verify_live_demo.py --base-url http://ec2-3-235-22-143.compute-1.amazonaws.com:8080
+    python scripts/verify_live_demo.py --base-url http://localhost:8080
     ```
 
 ## Security notes

@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+﻿import { useCallback, useEffect, useState } from "react";
 import { ApiError, fetchHealth } from "@/lib/api-contract";
 import type { HealthResponse } from "@/types/api";
 import { ErrorState } from "@/components/noc/ErrorState";
 import { LoadingSkeleton } from "@/components/noc/LoadingSkeleton";
 
-const KB_ID = "RBTJM6NIG9";
+const KB_ID = "${PITER_BEDROCK_KB_ID}";
 const S3_PREFIX = "projects/piter-aiops/knowledge_base/";
 
 export function KnowledgeBasePage() {

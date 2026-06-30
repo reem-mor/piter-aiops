@@ -1,4 +1,4 @@
-# Knowledge Base sync (approval-gated)
+﻿# Knowledge Base sync (approval-gated)
 
 Local JSON is canonical for offline RAG. Bedrock KB indexes **Markdown on S3**.
 
@@ -13,7 +13,7 @@ python scripts/export_kb_json_to_md.py
 
 ```powershell
 $env:AWS_PROFILE = "reemmor"
-aws s3 sync knowledge_base/ s3://reem-amdocs-ai-artifacts-3331/projects/piter-aiops/knowledge_base/ `
+aws s3 sync knowledge_base/ s3://your-artifacts-bucket/projects/piter-aiops/knowledge_base/ `
   --exclude "*.json" --region us-east-1
 ```
 
@@ -21,8 +21,8 @@ aws s3 sync knowledge_base/ s3://reem-amdocs-ai-artifacts-3331/projects/piter-ai
 
 ```powershell
 aws bedrock-agent start-ingestion-job `
-  --knowledge-base-id RBTJM6NIG9 `
-  --data-source-id YICXAB6WOG `
+  --knowledge-base-id ${PITER_BEDROCK_KB_ID} `
+  --data-source-id ${PITER_BEDROCK_DATA_SOURCE_ID} `
   --region us-east-1 `
   --profile reemmor
 ```
@@ -31,8 +31,8 @@ Verify status:
 
 ```powershell
 aws bedrock-agent list-ingestion-jobs `
-  --knowledge-base-id RBTJM6NIG9 `
-  --data-source-id YICXAB6WOG `
+  --knowledge-base-id ${PITER_BEDROCK_KB_ID} `
+  --data-source-id ${PITER_BEDROCK_DATA_SOURCE_ID} `
   --region us-east-1 `
   --profile reemmor
 ```

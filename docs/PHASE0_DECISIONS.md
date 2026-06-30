@@ -1,4 +1,4 @@
-# Phase 0 — Resolved Decisions
+﻿# Phase 0 — Resolved Decisions
 
 Approved as part of the full implementation plan (2026-06-09). Use this document as the acceptance baseline when the PDF is unavailable.
 
@@ -9,7 +9,7 @@ Approved as part of the full implementation plan (2026-06-09). Use this document
 
 ## Foundation model
 
-- **Keep** live AWS model: `us.anthropic.claude-sonnet-4-5-20250929-v1:0` (Agent `HH4YGSLZUE`, alias `live`).
+- **Keep** live AWS model: `us.anthropic.claude-sonnet-4-5-20250929-v1:0` (Agent `${PITER_BEDROCK_AGENT_ID}`, alias `live`).
 - Do not switch to Nova Lite without an explicit AWS change request and instructor approval.
 
 ## Demo storyline

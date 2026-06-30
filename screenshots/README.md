@@ -1,4 +1,4 @@
-# PITER AiOps Screenshots
+﻿# PITER AiOps Screenshots
 
 Use `screenshots/final/` for the mid-project submission and live-demo README.
 These captures match the current React dashboard, Flask API flow, PITER memory
@@ -31,7 +31,7 @@ screen, Knowledge Base view, tool results, and Docker/test proof.
 ```powershell
 cd C:\dev\amdocs-ai-course\projects\piter-aiops\frontend
 npm ci
-$env:PITER_BASE_URL = "http://ec2-3-235-22-143.compute-1.amazonaws.com:8080"
+$env:PITER_BASE_URL = "http://localhost:8080"
 npx playwright test e2e/submission-screenshots.spec.ts --project=chromium
 ```
 

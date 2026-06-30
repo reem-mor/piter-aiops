@@ -1,4 +1,4 @@
-# Phase 6 — Submission package
+﻿# Phase 6 — Submission package
 
 ## Decisions (Phase 0)
 
@@ -32,9 +32,9 @@ docker compose up --build
 
 | Resource | ID |
 |----------|-----|
-| Bedrock Agent | `HH4YGSLZUE` (alias `live` / `O2EM03R4R3`) |
-| Knowledge Base | `RBTJM6NIG9` |
-| S3 artifacts | `reem-amdocs-ai-artifacts-3331` |
+| Bedrock Agent | `${PITER_BEDROCK_AGENT_ID}` (alias `live` / `${PITER_BEDROCK_AGENT_ALIAS_ID}`) |
+| Knowledge Base | `${PITER_BEDROCK_KB_ID}` |
+| S3 artifacts | `your-artifacts-bucket` |
 
 KB sync commands (mutations require `APPROVED`): [`infra/KB_SYNC_COMMANDS.md`](../infra/KB_SYNC_COMMANDS.md)
 
