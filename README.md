@@ -1,4 +1,12 @@
-﻿<div align="center">
+> **Portfolio role:** Earlier AWS Bedrock incident-triage implementation that informed [PETER PAN](https://github.com/reem-mor/peter-pan), the current flagship incident-intelligence project.
+>
+> **Distinct focus:** Bedrock Agent + Knowledge Base RAG + Lambda action groups, with preview-first escalation and a React operations UI.
+>
+> **Start here:** [Screenshots](screenshots/final/) · [CI](https://github.com/reem-mor/piter-aiops/actions/workflows/ci.yml) · [Current flagship](https://github.com/reem-mor/peter-pan)
+
+---
+
+<div align="center">
 
 # PITER AiOps
 
